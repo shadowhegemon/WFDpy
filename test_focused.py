@@ -108,91 +108,8 @@ class TestWebRoutes(WFDLoggerTestCase):
         self.assertIn(b'data-bs-theme="dark"', response.data)
 
 
-class TestCallsignLookupAPI(WFDLoggerTestCase):
-    """Test callsign lookup API endpoint"""
-    
-    def test_callsign_lookup_api_missing_param(self):
-        """Test callsign lookup API without callsign parameter"""
-        response = self.app.get('/lookup_callsign')
-        self.assertEqual(response.status_code, 400)
-        # Check if response contains error message
-        self.assertIn(b'error', response.data.lower())
-    
-    @patch('app.lookup_callsign_hamqth')
-    @patch('app.lookup_callsign_radiodb')
-    def test_callsign_lookup_api_success(self, mock_radiodb, mock_hamqth):
-        """Test callsign lookup API with mocked responses"""
-        # Mock successful lookups
-        mock_hamqth.return_value = {'callsign': 'W1AW', 'source': 'hamqth'}
-        mock_radiodb.return_value = {'callsign': 'W1AW', 'source': 'radiodb'}
-        
-        response = self.app.get('/lookup_callsign?callsign=W1AW')
-        self.assertEqual(response.status_code, 200)
-        
-        # Should return JSON with callsign data (actual API returns direct response from first successful lookup)
-        self.assertIn(b'callsign', response.data)
-        self.assertIn(b'W1AW', response.data)
 
 
-class TestCallsignLookupFunctions(unittest.TestCase):
-    """Test callsign lookup functions with mocked network calls"""
-    
-    @patch('app.requests.get')
-    def test_lookup_callsign_hamqth_success(self, mock_get):
-        """Test successful HamQTH callsign lookup"""
-        from app import lookup_callsign_hamqth
-        
-        # Mock successful response
-        mock_response = MagicMock()
-        mock_response.status_code = 200
-        mock_response.content = b'''<?xml version="1.0" encoding="UTF-8"?>
-        <HamQTH>
-            <callsign>W1AW</callsign>
-            <nick>Test Station</nick>
-            <country>United States</country>
-        </HamQTH>'''
-        mock_get.return_value = mock_response
-        
-        result = lookup_callsign_hamqth('W1AW')
-        
-        # Should return data or None (depending on XML parsing)
-        # The function handles its own errors, so we just check it doesn't crash
-        self.assertIsNotNone(result)
-    
-    @patch('app.requests.get')  
-    def test_lookup_callsign_hamqth_failure(self, mock_get):
-        """Test failed HamQTH callsign lookup"""
-        from app import lookup_callsign_hamqth
-        
-        # Mock failed response
-        mock_get.side_effect = Exception('Network error')
-        
-        result = lookup_callsign_hamqth('N0CALL')
-        # Should handle the error gracefully and return error info (better than None)
-        self.assertIsNotNone(result)
-        self.assertIn('error', result)
-        self.assertEqual(result['callsign'], 'N0CALL')
-        self.assertIn('Network error', result['error'])
-    
-    @patch('app.requests.get')
-    def test_lookup_callsign_radiodb_success(self, mock_get):
-        """Test successful Radio-DB callsign lookup"""
-        from app import lookup_callsign_radiodb
-        
-        # Mock successful response  
-        mock_response = MagicMock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'callsign': 'W1AW',
-            'name': 'Test Station',
-            'country': 'United States'
-        }
-        mock_get.return_value = mock_response
-        
-        result = lookup_callsign_radiodb('W1AW')
-        
-        # Should return data or None
-        self.assertIsNotNone(result)
 
 
 class TestAnalyticsFunctionExistence(WFDLoggerTestCase):
@@ -221,8 +138,6 @@ if __name__ == '__main__':
     test_classes = [
         TestBandConversion,
         TestWebRoutes,
-        TestCallsignLookupAPI,
-        TestCallsignLookupFunctions,
         TestAnalyticsFunctionExistence
     ]
     

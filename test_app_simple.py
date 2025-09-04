@@ -248,41 +248,11 @@ class TestAnalyticsFunctionsWithContext(WFDLoggerTestCase):
             self.fail(f"Analytics functions failed: {e}")
 
 
-class TestCallsignLookup(unittest.TestCase):
-    """Test callsign lookup functions (mocked network calls)"""
-    
-    @patch('app.requests.get')
-    def test_lookup_callsign_hamqth_success(self, mock_get):
-        """Test successful HamQTH callsign lookup"""
-        from app import lookup_callsign_hamqth
-        
-        # Mock successful response
-        mock_response = MagicMock()
-        mock_response.status_code = 200
-        mock_response.content = b'''<?xml version="1.0" encoding="UTF-8"?>
-        <HamQTH>
-            <callsign>W1AW</callsign>
-            <nick>Test Station</nick>
-            <country>United States</country>
-        </HamQTH>'''
-        mock_get.return_value = mock_response
-        
-        result = lookup_callsign_hamqth('W1AW')
-        
-        self.assertIsNotNone(result)
-        self.assertEqual(result.get('callsign'), 'W1AW')
 
 
 class TestAPIEndpoints(WFDLoggerTestCase):
     """Test API endpoints"""
     
-    def test_callsign_lookup_api_missing_param(self):
-        """Test callsign lookup API without callsign parameter"""
-        response = self.app.get('/lookup_callsign')
-        self.assertEqual(response.status_code, 400)
-        
-        # Check if response contains error message
-        self.assertIn(b'error', response.data.lower())
 
 
 if __name__ == '__main__':
@@ -296,7 +266,6 @@ if __name__ == '__main__':
         TestDatabaseModels,
         TestWebRoutes,
         TestAnalyticsFunctionsWithContext,
-        TestCallsignLookup,
         TestAPIEndpoints
     ]
     

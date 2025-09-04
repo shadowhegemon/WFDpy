@@ -1,14 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)",
-      "Bash(python test:*)",
-      "Bash(python:*)",
-      "Bash(pip install:*)",
-      "WebFetch(domain:winterfieldday.org)",
-      "Bash(curl:*)",
-      "Bash(dir:*)",
-      "Bash(git init:*)",
+      "Bash(echo $USER)",
+      "Bash(where bash)",
+      "Bash(icacls:*)",
       "Bash(git add:*)"
     ],
     "deny": [],

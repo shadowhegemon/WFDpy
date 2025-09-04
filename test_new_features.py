@@ -2,7 +2,7 @@
 
 """
 Comprehensive test script for all new WFD Logger features added today
-Tests: Dark mode, Callsign lookup, Band activity charts, and all backend functions
+Tests: Dark mode, Band activity charts, and all backend functions
 """
 
 import sys
@@ -19,9 +19,7 @@ from app import (
     get_band_from_frequency, 
     get_band_activity_data,
     get_temporal_activity_data,
-    get_mode_statistics,
-    lookup_callsign_hamqth,
-    lookup_callsign_radiodb
+    get_mode_statistics
 )
 
 def test_band_conversion():
@@ -89,42 +87,6 @@ def test_analytics_functions():
         print(f"FAIL: Analytics functions error: {e}")
         return False
 
-def test_callsign_lookup():
-    """Test callsign lookup functionality"""
-    print("\nTesting Callsign Lookup Functions...")
-    print("=" * 50)
-    
-    test_callsigns = ['W1AW', 'N0CALL']  # W1AW should exist, N0CALL should not
-    
-    for callsign in test_callsigns:
-        print(f"\nTesting {callsign}:")
-        
-        # Test HamQTH lookup
-        try:
-            result = lookup_callsign_hamqth(callsign)
-            if result and result.get('callsign'):
-                print(f"  HamQTH PASS: Found data for {callsign}")
-                print(f"    Name: {result.get('name', 'N/A')}")
-                print(f"    Country: {result.get('country', 'N/A')}")
-            else:
-                print(f"  HamQTH INFO: No data found for {callsign}")
-        except Exception as e:
-            print(f"  HamQTH INFO: Lookup failed for {callsign}: {e}")
-        
-        # Test Radio-DB lookup  
-        try:
-            result = lookup_callsign_radiodb(callsign)
-            if result and result.get('callsign'):
-                print(f"  Radio-DB PASS: Found data for {callsign}")
-                print(f"    Name: {result.get('name', 'N/A')}")
-                print(f"    Country: {result.get('country', 'N/A')}")
-            else:
-                print(f"  Radio-DB INFO: No data found for {callsign}")
-        except Exception as e:
-            print(f"  Radio-DB INFO: Lookup failed for {callsign}: {e}")
-    
-    print("\nCallsign Lookup Tests: Completed (network dependent)")
-    return True
 
 def test_web_routes():
     """Test web routes are accessible"""
@@ -231,7 +193,6 @@ def main():
     # Run all tests
     test_results.append(("Band Conversion", test_band_conversion()))
     test_results.append(("Analytics Functions", test_analytics_functions()))
-    test_results.append(("Callsign Lookup", test_callsign_lookup()))
     test_results.append(("Web Routes", test_web_routes()))
     test_results.append(("Dark Mode Assets", test_dark_mode_assets()))
     test_results.append(("Template Inheritance", test_template_inheritance()))

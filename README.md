@@ -35,7 +35,6 @@ For more information about Winter Field Day, visit the official website: [https:
 
 ### Advanced Features
 - **Dark Mode Support** - Toggle between light and dark themes with persistence
-- **Callsign Lookup** - Integration with HamQTH and Radio-DB APIs
 - **Band Activity Charts** - Visual analytics with Chart.js
 - **Responsive Design** - Mobile-friendly interface
 - **Real-time Clock** - UTC time display with contest status
@@ -134,11 +133,6 @@ Configure your station information in the **Station Setup** page:
 - Toggle between light and dark themes using the button in the navigation
 - Theme preference is automatically saved and persists between sessions
 
-### Callsign Lookup
-- Automatic lookup when entering callsigns
-- Manual lookup with the search button
-- Uses HamQTH and Radio-DB APIs for station information
-
 ## 📊 Contest Features
 
 ### Winter Field Day Scoring
@@ -171,7 +165,6 @@ The application includes extensive testing covering:
 - Web routes and functionality
 - Database operations
 - Band/frequency conversions
-- Callsign lookup integration
 - Form validation
 - Export functionality
 
@@ -249,7 +242,6 @@ If you encounter issues or have questions:
   - Complete contest logging system
   - Real-time scoring and statistics
   - Dark mode support
-  - Callsign lookup integration
   - Export capabilities
   - Comprehensive test coverage
 

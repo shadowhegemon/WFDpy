@@ -46,8 +46,6 @@
                         <!-- Duplicate Contact Warning Area -->
                         <div id="duplicate-warning" style="display: none;"></div>
                         
-                        <!-- Callsign Lookup Results Area -->
-                        <div id="callsign-lookup" style="display: none;"></div>
                         
                         <form method="POST">
                             {{ form.hidden_tag() }}
@@ -55,12 +53,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     {{ form.callsign.label(class="form-label") }}
-                                    <div class="input-group">
-                                        {{ form.callsign(class="form-control form-control-lg", placeholder="W1AW") }}
-                                        <button type="button" id="lookup-btn" class="btn btn-outline-info" title="Lookup callsign information">
-                                            <i class="bi bi-search"></i> Lookup
-                                        </button>
-                                    </div>
+                                    {{ form.callsign(class="form-control form-control-lg", placeholder="W1AW") }}
                                     {% if form.callsign.errors %}
                                         <div class="text-danger">{{ form.callsign.errors[0] }}</div>
                                     {% endif %}
@@ -277,153 +270,6 @@
     document.getElementById('frequency').addEventListener('input', checkDuplicateContact);
     document.getElementById('mode').addEventListener('change', checkDuplicateContact);
     
-    // Callsign lookup functionality
-    let lookupTimeout;
-    
-    function lookupCallsign(callsign, manual = false) {
-        if (!callsign || callsign.length < 3) {
-            hideCallsignLookup();
-            return;
-        }
-        
-        // Show loading state for manual lookups
-        if (manual) {
-            showCallsignLookup([{
-                type: 'info',
-                message: `<i class="bi bi-hourglass-split"></i> Looking up ${callsign}...`,
-                loading: true
-            }]);
-        }
-        
-        // Clear existing timeout
-        if (lookupTimeout) {
-            clearTimeout(lookupTimeout);
-        }
-        
-        // Delay API call for automatic lookups
-        const delay = manual ? 0 : 1500;
-        
-        lookupTimeout = setTimeout(() => {
-            fetch(`/lookup_callsign?callsign=${encodeURIComponent(callsign)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        if (manual) {
-                            showCallsignLookup([{
-                                type: 'warning',
-                                message: `<i class="bi bi-exclamation-triangle"></i> Lookup failed: ${data.error}`
-                            }]);
-                        } else {
-                            hideCallsignLookup();
-                        }
-                    } else {
-                        displayCallsignInfo(data);
-                    }
-                })
-                .catch(error => {
-                    console.error('Callsign lookup error:', error);
-                    if (manual) {
-                        showCallsignLookup([{
-                            type: 'danger',
-                            message: `<i class="bi bi-exclamation-circle"></i> Network error during lookup`
-                        }]);
-                    } else {
-                        hideCallsignLookup();
-                    }
-                });
-        }, delay);
-    }
-    
-    function displayCallsignInfo(data) {
-        const info = [];
-        
-        if (data.name) {
-            info.push(`<strong>Name:</strong> ${data.name}`);
-        }
-        if (data.qth) {
-            info.push(`<strong>QTH:</strong> ${data.qth}`);
-        }
-        if (data.grid) {
-            info.push(`<strong>Grid:</strong> ${data.grid}`);
-        }
-        if (data.country) {
-            info.push(`<strong>Country:</strong> ${data.country}`);
-        }
-        if (data.state) {
-            info.push(`<strong>State:</strong> ${data.state}`);
-        }
-        
-        const sourceInfo = data.source ? `<small class="text-muted">Source: ${data.source}</small>` : '';
-        
-        if (info.length > 0) {
-            showCallsignLookup([{
-                type: 'success',
-                message: `<i class="bi bi-person-check"></i> <strong>${data.callsign}</strong><br>${info.join(' | ')}${sourceInfo ? '<br>' + sourceInfo : ''}`,
-                persistent: true
-            }]);
-        } else {
-            showCallsignLookup([{
-                type: 'info',
-                message: `<i class="bi bi-info-circle"></i> ${data.callsign} found but no additional information available<br>${sourceInfo}`
-            }]);
-        }
-    }
-    
-    function showCallsignLookup(messages) {
-        const lookupDiv = document.getElementById('callsign-lookup');
-        let html = '';
-        
-        messages.forEach(msg => {
-            const alertClass = msg.loading ? 'alert-info' : `alert-${msg.type}`;
-            const dismissButton = msg.persistent ? '' : '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-            
-            html += `<div class="alert ${alertClass} alert-dismissible fade show">
-                ${msg.message}
-                ${dismissButton}
-            </div>`;
-        });
-        
-        lookupDiv.innerHTML = html;
-        lookupDiv.style.display = 'block';
-    }
-    
-    function hideCallsignLookup() {
-        const lookupDiv = document.getElementById('callsign-lookup');
-        lookupDiv.style.display = 'none';
-        lookupDiv.innerHTML = '';
-    }
-    
-    // Add event listeners for callsign lookup
-    document.getElementById('lookup-btn').addEventListener('click', function() {
-        const callsign = document.getElementById('callsign').value.trim().toUpperCase();
-        if (callsign) {
-            lookupCallsign(callsign, true);
-        } else {
-            showCallsignLookup([{
-                type: 'warning',
-                message: '<i class="bi bi-exclamation-triangle"></i> Please enter a callsign first'
-            }]);
-        }
-    });
-    
-    // Auto-lookup when callsign field loses focus (optional)
-    document.getElementById('callsign').addEventListener('blur', function() {
-        const callsign = this.value.trim().toUpperCase();
-        if (callsign && callsign.length >= 3) {
-            lookupCallsign(callsign, false);
-        }
-    });
-    
-    // Allow Enter key to trigger lookup
-    document.getElementById('callsign').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const callsign = this.value.trim().toUpperCase();
-            if (callsign) {
-                lookupCallsign(callsign, true);
-            }
-        }
-    });
 
     // Contest Clock
     const WFD_START = new Date('2026-01-24T16:00:00Z');

@@ -70,3 +70,6 @@ coverage.xml
 
 # Documentation builds
 docs/_build/
+
+# Claude Code settings
+.claude/settings.local.json

@@ -1,0 +1,1 @@
+- after we add or remove any feature make sure to update the readme and then prompt to see if we want to commit the changes then

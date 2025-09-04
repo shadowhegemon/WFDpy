@@ -92,6 +92,77 @@ def extract_arrl_section(exchange_received):
     
     return None
 
+def get_arrl_section_timezone(arrl_section):
+    """Get timezone for ARRL section"""
+    if not arrl_section:
+        return 'America/New_York'  # Default to Eastern
+    
+    section = arrl_section.upper()
+    
+    # Pacific Time (UTC-8/-7)
+    pacific_sections = {
+        'WA', 'OR', 'NV', 'CA', 'EB', 'LAX', 'ORG', 'SB', 'SCV', 'SF', 'SJV', 'SV', 'PAC'
+    }
+    
+    # Mountain Time (UTC-7/-6)
+    mountain_sections = {
+        'AZ', 'CO', 'ID', 'MT', 'NM', 'UT', 'WY'
+    }
+    
+    # Central Time (UTC-6/-5)  
+    central_sections = {
+        'AL', 'AR', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'MN', 'MS', 'MO', 'NE', 'ND', 
+        'OK', 'SD', 'TN', 'TX', 'NTX', 'STX', 'WTX', 'WI'
+    }
+    
+    # Eastern Time (UTC-5/-4)
+    eastern_sections = {
+        'CT', 'DE', 'FL', 'WCF', 'NFL', 'SFL', 'GA', 'ME', 'MDC', 'MA', 'EMA', 'MI', 
+        'NH', 'NJ', 'NNJ', 'SNJ', 'NY', 'NYC', 'LI', 'NLI', 'WNY', 'NC', 'OH', 
+        'PA', 'EPA', 'WPA', 'RI', 'SC', 'VT', 'VA', 'WV'
+    }
+    
+    # Alaska Time (UTC-9/-8)
+    if section == 'AK':
+        return 'America/Anchorage'
+    
+    # Hawaii Time (UTC-10)
+    if section == 'HI':
+        return 'Pacific/Honolulu'
+    
+    # Canadian sections - approximate by region
+    canadian_sections = {
+        'BC': 'America/Vancouver',      # Pacific
+        'AB': 'America/Edmonton',       # Mountain  
+        'SK': 'America/Regina',         # Central
+        'MB': 'America/Winnipeg',       # Central
+        'ON': 'America/Toronto',        # Eastern
+        'QC': 'America/Montreal',       # Eastern
+        'NB': 'America/Moncton',        # Atlantic
+        'NS': 'America/Halifax',        # Atlantic
+        'PE': 'America/Halifax',        # Atlantic
+        'NL': 'America/St_Johns',       # Newfoundland
+        'NT': 'America/Yellowknife',    # Mountain
+        'NU': 'America/Iqaluit',        # Eastern
+        'YT': 'America/Whitehorse'      # Pacific
+    }
+    
+    if section in canadian_sections:
+        return canadian_sections[section]
+    
+    # US sections by timezone
+    if section in pacific_sections:
+        return 'America/Los_Angeles'
+    elif section in mountain_sections:
+        return 'America/Denver'
+    elif section in central_sections:
+        return 'America/Chicago'
+    elif section in eastern_sections:
+        return 'America/New_York'
+    else:
+        # Default for international sections (MX, DX, etc.)
+        return 'UTC'
+
 class StationSetup(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     setup_name = db.Column(db.String(100), nullable=False, default='Default Setup')
@@ -100,6 +171,7 @@ class StationSetup(db.Model):
     operator_callsign = db.Column(db.String(20), nullable=False)
     wfd_category = db.Column(db.String(10), nullable=False)
     arrl_section = db.Column(db.String(10), nullable=False)
+    timezone = db.Column(db.String(50), nullable=True)
     power_level = db.Column(db.String(50), nullable=False)
     location = db.Column(db.String(200), nullable=True)
     grid_square = db.Column(db.String(10), nullable=True)
@@ -196,6 +268,25 @@ class StationSetupForm(FlaskForm):
         ('NS', 'Nova Scotia'), ('NU', 'Nunavut'), ('ON', 'Ontario'), ('PE', 'Prince Edward Island'), 
         ('QC', 'Quebec'), ('SK', 'Saskatchewan'), ('YT', 'Yukon')
     ], validators=[DataRequired()])
+    timezone = SelectField('Timezone Override (Optional)', choices=[
+        ('', 'Auto-detect from ARRL Section'),
+        ('America/Los_Angeles', 'Pacific Time'),
+        ('America/Denver', 'Mountain Time'),
+        ('America/Chicago', 'Central Time'),
+        ('America/New_York', 'Eastern Time'),
+        ('America/Anchorage', 'Alaska Time'),
+        ('Pacific/Honolulu', 'Hawaii Time'),
+        ('America/Vancouver', 'Pacific (Vancouver)'),
+        ('America/Edmonton', 'Mountain (Edmonton)'),
+        ('America/Regina', 'Central (Regina)'),
+        ('America/Winnipeg', 'Central (Winnipeg)'),
+        ('America/Toronto', 'Eastern (Toronto)'),
+        ('America/Montreal', 'Eastern (Montreal)'),
+        ('America/Moncton', 'Atlantic (Moncton)'),
+        ('America/Halifax', 'Atlantic (Halifax)'),
+        ('America/St_Johns', 'Newfoundland'),
+        ('UTC', 'UTC')
+    ])
     power_level = StringField('Power Level (Watts)', validators=[DataRequired()], default='100')
     location = StringField('Operating Location', validators=[Length(max=200)])
     grid_square = StringField('Grid Square', validators=[Length(max=10)])
@@ -955,6 +1046,7 @@ def new_station_setup():
             operator_callsign=form.operator_callsign.data.upper(),
             wfd_category=form.wfd_category.data,
             arrl_section=form.arrl_section.data,
+            timezone=form.timezone.data if form.timezone.data else None,
             power_level=form.power_level.data,
             location=form.location.data,
             grid_square=form.grid_square.data.upper() if form.grid_square.data else None,
@@ -985,6 +1077,7 @@ def edit_station_setup(setup_id):
         setup.operator_callsign = form.operator_callsign.data.upper()
         setup.wfd_category = form.wfd_category.data
         setup.arrl_section = form.arrl_section.data
+        setup.timezone = form.timezone.data if form.timezone.data else None
         setup.power_level = form.power_level.data
         setup.location = form.location.data
         setup.grid_square = form.grid_square.data.upper() if form.grid_square.data else None
@@ -1126,6 +1219,52 @@ def download_adif():
         mimetype='text/plain',
         headers={'Content-Disposition': f'attachment; filename={filename}'}
     )
+
+@app.route('/api/station_timezone')
+def station_timezone():
+    """Get the timezone information for the active station"""
+    station_info = get_active_station()
+    
+    if not station_info:
+        return jsonify({
+            'timezone': 'America/New_York',
+            'arrl_section': None,
+            'label': 'Eastern'
+        })
+    
+    # Get timezone from station or derive from ARRL section
+    if hasattr(station_info, 'timezone') and station_info.timezone:
+        timezone_name = station_info.timezone
+    else:
+        timezone_name = get_arrl_section_timezone(station_info.arrl_section)
+    
+    # Generate a friendly label
+    timezone_labels = {
+        'America/Los_Angeles': 'Pacific',
+        'America/Denver': 'Mountain', 
+        'America/Chicago': 'Central',
+        'America/New_York': 'Eastern',
+        'America/Anchorage': 'Alaska',
+        'Pacific/Honolulu': 'Hawaii',
+        'America/Vancouver': 'Pacific',
+        'America/Edmonton': 'Mountain',
+        'America/Regina': 'Central',
+        'America/Winnipeg': 'Central', 
+        'America/Toronto': 'Eastern',
+        'America/Montreal': 'Eastern',
+        'America/Moncton': 'Atlantic',
+        'America/Halifax': 'Atlantic',
+        'America/St_Johns': 'Newfoundland',
+        'UTC': 'UTC'
+    }
+    
+    label = timezone_labels.get(timezone_name, 'Local')
+    
+    return jsonify({
+        'timezone': timezone_name,
+        'arrl_section': station_info.arrl_section,
+        'label': label
+    })
 
 if __name__ == '__main__':
     with app.app_context():

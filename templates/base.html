@@ -31,8 +31,19 @@
                     <a class="nav-link {% if request.endpoint == 'wfd_rules' %}active{% endif %}" href="{{ url_for('wfd_rules') }}">WFD Rules</a>
                 </div>
                 
-                <!-- Dark mode toggle -->
-                <div class="navbar-nav">
+                <!-- Real-time clock and Dark mode toggle -->
+                <div class="navbar-nav d-flex align-items-center">
+                    <!-- Real-time clock -->
+                    <div class="navbar-text me-3" id="clock-display">
+                        <div class="d-flex flex-column text-end">
+                            <small class="text-light opacity-75" style="font-size: 0.7rem; line-height: 1;">GMT</small>
+                            <span class="fw-bold" style="font-size: 0.9rem; line-height: 1;" id="gmt-time">--:--:--</span>
+                            <small class="text-light opacity-75" style="font-size: 0.7rem; line-height: 1;" id="local-label">Local</small>
+                            <span class="fw-bold" style="font-size: 0.9rem; line-height: 1;" id="local-time">--:--:--</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Dark mode toggle -->
                     <button id="dark-mode-toggle" class="btn dark-mode-toggle navbar-text" type="button" title="Toggle dark mode">
                         <i class="bi bi-sun theme-icon" id="theme-icon"></i>
                         <span id="theme-text">Light</span>
@@ -98,6 +109,64 @@
                 }
             });
         }
+    </script>
+    
+    <!-- Real-time Clock JavaScript -->
+    <script>
+        let stationTimezone = 'America/New_York';
+        let stationLabel = 'Eastern';
+        
+        // Fetch station timezone information
+        async function fetchStationTimezone() {
+            try {
+                const response = await fetch('/api/station_timezone');
+                if (response.ok) {
+                    const data = await response.json();
+                    stationTimezone = data.timezone;
+                    stationLabel = data.label;
+                    
+                    // Update the local time label
+                    document.getElementById('local-label').textContent = stationLabel;
+                }
+            } catch (error) {
+                console.warn('Failed to fetch station timezone:', error);
+            }
+        }
+        
+        function updateNavClock() {
+            const now = new Date();
+            
+            // GMT time
+            const gmtOptions = {
+                timeZone: 'UTC',
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const gmtTime = now.toLocaleTimeString('en-US', gmtOptions);
+            document.getElementById('gmt-time').textContent = gmtTime;
+            
+            // Local time based on station timezone
+            const localOptions = {
+                timeZone: stationTimezone,
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const localTime = now.toLocaleTimeString('en-US', localOptions);
+            document.getElementById('local-time').textContent = localTime;
+        }
+        
+        // Initialize clock
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchStationTimezone().then(() => {
+                updateNavClock();
+                // Update clock every second
+                setInterval(updateNavClock, 1000);
+            });
+        });
     </script>
     
     {% block extra_js %}{% endblock %}

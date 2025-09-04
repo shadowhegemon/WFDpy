@@ -86,11 +86,23 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-md-6 mb-3">
+                                    {{ form.timezone.label(class="form-label") }}
+                                    {{ form.timezone(class="form-select") }}
+                                    {% if form.timezone.errors %}
+                                        <div class="text-danger">{{ form.timezone.errors[0] }}</div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">Leave blank to auto-detect from ARRL section</small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
                                     {{ form.power_level.label(class="form-label") }}
-                                    {{ form.power_level(class="form-select") }}
+                                    {{ form.power_level(class="form-control", placeholder="100") }}
                                     {% if form.power_level.errors %}
                                         <div class="text-danger">{{ form.power_level.errors[0] }}</div>
                                     {% endif %}
+                                    <small class="form-text text-muted">Power level in watts</small>
                                 </div>
                             </div>
 

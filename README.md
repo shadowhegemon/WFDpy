@@ -35,9 +35,11 @@ For more information about Winter Field Day, visit the official website: [https:
 
 ### Advanced Features
 - **Dark Mode Support** - Toggle between light and dark themes with persistence
+- **Real-time Clock Display** - GMT and local time based on station's ARRL section timezone
+- **Timezone Auto-detection** - Automatic timezone mapping from ARRL sections with manual override
 - **Band Activity Charts** - Visual analytics with Chart.js
 - **Responsive Design** - Mobile-friendly interface
-- **Real-time Clock** - UTC time display with contest status
+- **Contest Status Clock** - UTC time display with contest countdown and status
 
 ### Technical Features
 - **Modern Web Stack** - Flask, SQLAlchemy, Bootstrap 5
@@ -126,8 +128,15 @@ Configure your station information in the **Station Setup** page:
 - Station callsign
 - Contest class (H/I/O/M)
 - ARRL section
+- Timezone (auto-detected from ARRL section or manual override)
 - Number of transmitters
 - Operator callsigns
+
+### Real-Time Clock
+- Displays GMT and local time in the navigation bar
+- Local time automatically determined from station's ARRL section
+- Supports all US/Canadian timezones including Alaska, Hawaii, and Atlantic zones
+- Updates every second for accurate timing during contest operations
 
 ### Dark Mode
 - Toggle between light and dark themes using the button in the navigation

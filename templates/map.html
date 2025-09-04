@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Map{% endblock %}
+
+{% block extra_css %}
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+    .state {
+        fill: #ccc;
+        stroke: #fff;
+        stroke-width: 1px;
+    }
+    .state.worked {
+        fill: #28a745;
+    }
+    .state:hover {
+        fill: #007bff;
+    }
+    #map-container {
+        width: 100%;
+        height: 500px;
+        border: 1px solid #ddd;
+        background: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    #us-map-svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    
+    .state-path {
+        fill: #ccc !important;
+        stroke: #000 !important;
+        stroke-width: 1 !important;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .state-path.worked {
+        fill: #28a745 !important;
+    }
+    
+    .state-path:hover {
+        fill: #007bff !important;
+        stroke: #000 !important;
+        stroke-width: 2 !important;
+    }
+    .legend {
+        margin-top: 20px;
+    }
+    .legend-item {
+        display: inline-block;
+        margin-right: 20px;
+    }
+    .legend-color {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1>Contact Map - States & ARRL Sections Worked</h1>
+                
+                <div class="row mt-3">
+                    <div class="col-md-8">
+                        <div id="map-container">
+                            <svg id="us-map" width="100%" height="100%"></svg>
+                        </div>
+                        
+                        <div class="legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #28a745;"></span>
+                                States Worked ({{ states_worked|length }})
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #ccc;"></span>
+                                States Not Worked ({{ 50 - states_worked|length }})
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>ARRL Sections Worked</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Total Sections:</strong> {{ sections_worked|length }}</p>
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Section</th>
+                                                <th>Contacts</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for section in sections_worked %}
+                                            <tr>
+                                                <td><strong>{{ section }}</strong></td>
+                                                <td><span class="badge bg-primary">{{ section_data.get(section, 0) }}</span></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h5>WFD Multipliers</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>States Worked:</strong> {{ states_worked|length }}/50</p>
+                                <p><strong>ARRL Sections:</strong> {{ sections_worked|length }}/83</p>
+                                <div class="progress mb-2">
+                                    <div class="progress-bar bg-success" style="width: {{ (states_worked|length / 50 * 100)|round }}%">
+                                        {{ (states_worked|length / 50 * 100)|round }}% States
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" style="width: {{ (sections_worked|length / 83 * 100)|round }}%">
+                                        {{ (sections_worked|length / 83 * 100)|round }}% Sections
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const statesWorked = {{ states_worked | tojson }};
+    
+    // Load and display the US SVG map
+    fetch('/static/us.svg')
+        .then(response => response.text())
+        .then(svgContent => {
+            const container = document.getElementById("map-container");
+            container.innerHTML = svgContent;
+            
+            // Get the SVG element and add our styling
+            const svg = container.querySelector('svg');
+            if (svg) {
+                svg.id = 'us-map-svg';
+                
+                // Style all state paths
+                const statePaths = svg.querySelectorAll('path[id]');
+                statePaths.forEach(path => {
+                    const stateId = path.id;
+                    const isWorked = statesWorked.includes(stateId);
+                    
+                    // Set styles directly to override inline SVG styles
+                    path.style.stroke = '#000';
+                    path.style.strokeWidth = '1';
+                    path.style.cursor = 'pointer';
+                    path.style.transition = 'all 0.2s ease';
+                    
+                    // Set fill color based on worked status
+                    if (isWorked) {
+                        path.style.fill = '#28a745'; // Green for worked
+                    } else {
+                        path.style.fill = '#ccc'; // Gray for not worked
+                    }
+                    
+                    // Add hover effects and tooltips
+                    path.addEventListener('mouseenter', function() {
+                        const stateName = getStateName(stateId);
+                        path.setAttribute('title', stateName + (isWorked ? ' (Worked)' : ' (Not Worked)'));
+                        path.style.fill = '#007bff'; // Blue on hover
+                        path.style.strokeWidth = '2';
+                    });
+                    
+                    path.addEventListener('mouseleave', function() {
+                        // Restore original color
+                        path.style.fill = isWorked ? '#28a745' : '#ccc';
+                        path.style.strokeWidth = '1';
+                    });
+                    
+                    path.addEventListener('click', function() {
+                        const stateName = getStateName(stateId);
+                        alert(`${stateName} (${stateId}): ${isWorked ? 'Worked' : 'Not Worked'}`);
+                    });
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error loading SVG:', error);
+            // Fallback to simple text list if SVG fails
+            const container = document.getElementById("map-container");
+            container.innerHTML = `
+                <div class="alert alert-warning">
+                    <h5>Unable to load map visualization</h5>
+                    <p>States worked: ${statesWorked.join(', ') || 'None'}</p>
+                </div>
+            `;
+        });
+        
+    // Helper function to get full state names
+    function getStateName(abbr) {
+        const stateNames = {
+            'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
+            'CA': 'California', 'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware',
+            'FL': 'Florida', 'GA': 'Georgia', 'HI': 'Hawaii', 'ID': 'Idaho',
+            'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas',
+            'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
+            'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi',
+            'MO': 'Missouri', 'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada',
+            'NH': 'New Hampshire', 'NJ': 'New Jersey', 'NM': 'New Mexico', 'NY': 'New York',
+            'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio', 'OK': 'Oklahoma',
+            'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
+            'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah',
+            'VT': 'Vermont', 'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia',
+            'WI': 'Wisconsin', 'WY': 'Wyoming'
+        };
+        return stateNames[abbr] || abbr;
+    }
+</script>
+{% endblock %}

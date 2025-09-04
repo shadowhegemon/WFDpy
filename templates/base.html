@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WFD Logger{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dark-mode.css') }}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">WFD Logger</a>
+            
+            <!-- Mobile menu toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" href="{{ url_for('home') }}">Home</a>
+                    <a class="nav-link {% if request.endpoint == 'log_contact' %}active{% endif %}" href="{{ url_for('log_contact') }}">Log Contact</a>
+                    <a class="nav-link {% if request.endpoint == 'contacts' %}active{% endif %}" href="{{ url_for('contacts') }}">View Contacts</a>
+                    <a class="nav-link {% if request.endpoint == 'stats' %}active{% endif %}" href="{{ url_for('stats') }}">Statistics</a>
+                    <a class="nav-link {% if request.endpoint == 'map_view' %}active{% endif %}" href="{{ url_for('map_view') }}">Map</a>
+                    <a class="nav-link {% if request.endpoint in ['station_setup', 'new_station_setup', 'edit_station_setup'] %}active{% endif %}" href="{{ url_for('station_setup') }}">Station Setup</a>
+                    <a class="nav-link {% if request.endpoint == 'objectives' %}active{% endif %}" href="{{ url_for('objectives') }}">Objectives</a>
+                    <a class="nav-link {% if request.endpoint == 'wfd_rules' %}active{% endif %}" href="{{ url_for('wfd_rules') }}">WFD Rules</a>
+                </div>
+                
+                <!-- Dark mode toggle -->
+                <div class="navbar-nav">
+                    <button id="dark-mode-toggle" class="btn dark-mode-toggle navbar-text" type="button" title="Toggle dark mode">
+                        <i class="bi bi-sun theme-icon" id="theme-icon"></i>
+                        <span id="theme-text">Light</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Dark Mode JavaScript -->
+    <script>
+        // Dark mode functionality
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const htmlElement = document.documentElement;
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Apply the saved theme on page load
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                htmlElement.setAttribute('data-bs-theme', 'dark');
+                themeIcon.className = 'bi bi-moon theme-icon';
+                themeText.textContent = 'Dark';
+            } else {
+                htmlElement.removeAttribute('data-bs-theme');
+                themeIcon.className = 'bi bi-sun theme-icon';
+                themeText.textContent = 'Light';
+            }
+        }
+        
+        // Apply theme on page load
+        applyTheme(currentTheme);
+        
+        // Toggle theme when button is clicked
+        darkModeToggle.addEventListener('click', function() {
+            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+        
+        // Watch for system theme changes (optional enhancement)
+        if (window.matchMedia) {
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            
+            // Only auto-apply system theme if user hasn't manually set a preference
+            if (!localStorage.getItem('theme')) {
+                applyTheme(mediaQuery.matches ? 'dark' : 'light');
+            }
+            
+            mediaQuery.addEventListener('change', function(e) {
+                // Only auto-apply if user hasn't set a manual preference
+                if (!localStorage.getItem('theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

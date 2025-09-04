@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}WFD Logger - Home{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1>Winter Field Day Logger</h1>
+                    <div class="text-end">
+                        <div id="current-time" class="fs-5 fw-bold text-primary"></div>
+                        <div id="contest-status" class="small text-muted"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="alert alert-info">
+                            <strong>Total Contacts:</strong> {{ total }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-warning">
+                            <strong>WFD Score:</strong> {{ score_data.final_score }} points
+                            <small class="d-block text-muted">{{ score_data.contact_points }} pts × {{ score_data.multipliers }} mult × (1+{{ score_data.objective_multiplier }})</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Recent Contacts</h2>
+                {% if contacts %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Callsign</th>
+                                <th>Freq</th>
+                                <th>Mode</th>
+                                <th>Exchange</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contact in contacts %}
+                            <tr>
+                                <td>{{ contact.datetime.strftime('%H:%M') }}</td>
+                                <td><strong>{{ contact.callsign }}</strong></td>
+                                <td>{{ contact.frequency }}</td>
+                                <td>{{ contact.mode }}</td>
+                                <td>{{ contact.exchange_received }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p>No contacts logged yet. <a href="{{ url_for('log_contact') }}">Log your first contact!</a></p>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                {% if station_info %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5><i class="bi bi-broadcast"></i> Station Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Station:</strong> {{ station_info.station_callsign }}</p>
+                        <p class="mb-1"><strong>Operator:</strong> {{ station_info.operator_name }} ({{ station_info.operator_callsign }})</p>
+                        <p class="mb-1"><strong>Category:</strong> <span class="badge bg-primary">{{ station_info.wfd_category }}</span></p>
+                        <p class="mb-1"><strong>Section:</strong> {{ station_info.arrl_section }}</p>
+                        {% if station_info.location %}
+                            <p class="mb-1"><strong>Location:</strong> {{ station_info.location }}</p>
+                        {% endif %}
+                        {% if station_info.grid_square %}
+                            <p class="mb-0"><strong>Grid:</strong> {{ station_info.grid_square }}</p>
+                        {% endif %}
+                        <div class="text-center mt-2">
+                            <a href="{{ url_for('station_setup') }}" class="btn btn-sm btn-outline-secondary">Edit Setup</a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="card mb-3">
+                    <div class="card-header bg-warning">
+                        <h5><i class="bi bi-exclamation-triangle"></i> Setup Required</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Station setup not configured. Please set up your station information for Winter Field Day.</p>
+                        <a href="{{ url_for('station_setup') }}" class="btn btn-warning w-100">Configure Station</a>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="{{ url_for('log_contact') }}" class="btn btn-success btn-lg mb-2 w-100">Log New Contact</a>
+                        <a href="{{ url_for('contacts') }}" class="btn btn-primary mb-2 w-100">View All Contacts</a>
+                        <a href="{{ url_for('stats') }}" class="btn btn-info mb-2 w-100">View Statistics</a>
+                        
+                        {% if total > 0 %}
+                        <hr>
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="{{ url_for('download_cabrillo') }}" class="btn btn-outline-success btn-sm w-100">
+                                    <i class="bi bi-download"></i> Cabrillo
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="{{ url_for('download_adif') }}" class="btn btn-outline-info btn-sm w-100">
+                                    <i class="bi bi-download"></i> ADIF
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // WFD 2026 Contest Period: January 24-25, 2026
+        const WFD_START = new Date('2026-01-24T16:00:00Z'); // 1600 UTC Saturday
+        const WFD_END = new Date('2026-01-25T21:59:59Z');   // 2159 UTC Sunday
+        
+        function updateClock() {
+            const now = new Date();
+            const timeElement = document.getElementById('current-time');
+            const statusElement = document.getElementById('contest-status');
+            
+            if (!timeElement || !statusElement) return;
+            
+            // Display current UTC time
+            const utcTime = now.toUTCString().split(' ')[4] + ' UTC';
+            timeElement.textContent = utcTime;
+            
+            // Contest status
+            if (now < WFD_START) {
+                const timeToStart = WFD_START - now;
+                const days = Math.floor(timeToStart / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeToStart % (1000 * 60 * 60)) / (1000 * 60));
+                
+                if (days > 0) {
+                    statusElement.textContent = `WFD 2026 starts in ${days}d ${hours}h ${minutes}m`;
+                } else if (hours > 0) {
+                    statusElement.textContent = `WFD 2026 starts in ${hours}h ${minutes}m`;
+                } else {
+                    statusElement.textContent = `WFD 2026 starts in ${minutes}m`;
+                }
+                statusElement.className = 'small text-warning';
+            } else if (now >= WFD_START && now <= WFD_END) {
+                const elapsed = now - WFD_START;
+                const remaining = WFD_END - now;
+                
+                const elapsedHours = Math.floor(elapsed / (1000 * 60 * 60));
+                const elapsedMins = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+                
+                const remainHours = Math.floor(remaining / (1000 * 60 * 60));
+                const remainMins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                
+                statusElement.innerHTML = `<strong>WFD 2026 ACTIVE!</strong><br>Elapsed: ${elapsedHours}h ${elapsedMins}m | Remaining: ${remainHours}h ${remainMins}m`;
+                statusElement.className = 'small text-success';
+            } else {
+                statusElement.textContent = 'WFD 2026 completed';
+                statusElement.className = 'small text-muted';
+            }
+        }
+        
+        // Update clock every second
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+{% endblock %}

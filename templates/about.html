@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1>About Winter Field Day Logger</h1>
+                
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>What is Winter Field Day?</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Winter Field Day is an annual amateur radio event organized by the Winter Field Day Association (WFDA). It takes place on the last full weekend in January and emphasizes emergency preparedness and operating skills during winter conditions.</p>
+                        
+                        <h5>Key Features:</h5>
+                        <ul>
+                            <li>24-hour contest (1900 UTC Saturday to 1900 UTC Sunday)</li>
+                            <li>Emphasis on emergency power and outdoor operation</li>
+                            <li>Categories for indoor/outdoor and power levels</li>
+                            <li>Exchange includes category and state/province/country</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>About This Logger</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>This Flask-based logging application helps amateur radio operators track their contacts during Winter Field Day. Features include:</p>
+                        
+                        <ul>
+                            <li>Easy contact logging with Winter Field Day specific fields</li>
+                            <li>Real-time statistics and summaries</li>
+                            <li>Contact history and search</li>
+                            <li>Bootstrap-based responsive design</li>
+                            <li>SQLite database for reliable storage</li>
+                        </ul>
+                        
+                        <p>Built with Python Flask, SQLAlchemy, and Bootstrap for a clean, functional interface perfect for contest logging.</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('home') }}" class="btn btn-primary">Back to Home</a>
+                    <a href="{{ url_for('log_contact') }}" class="btn btn-success">Start Logging</a>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

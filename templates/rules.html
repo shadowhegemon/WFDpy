@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block title %}Winter Field Day Rules 2026{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1><i class="bi bi-book"></i> Winter Field Day 2026 - Official Rules</h1>
+                <p class="lead">Complete rules and guidelines from the Winter Field Day Association</p>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3><i class="bi bi-calendar-event"></i> Event Overview</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>When:</h5>
+                        <p><strong>January 24-25, 2026</strong> (Last full weekend in January)</p>
+                        <p><strong>Operational Period:</strong> 30 hours from <strong>1600 UTC Saturday</strong> (11 AM EST) to <strong>2159 UTC Sunday</strong> (4:59 PM EST)</p>
+                        
+                        <h5>Objective:</h5>
+                        <p>WFD is a <strong>multi-objective event</strong>. The primary objective is to set up an amateur radio field station and successfully make multiple contacts. This is an <strong>Operating Event</strong>, not a contest - it's about emergency preparedness and skills development.</p>
+                        
+                        <h5>Setup Time:</h5>
+                        <p>Stations may begin setup no earlier than 1600 UTC Friday, with cumulative setup time not exceeding 12 hours.</p>
+                        
+                        <div class="alert alert-warning">
+                            <strong>Location Constraint:</strong> All stations under a single call sign must be within a circular area of 1,000 feet (300m) diameter.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h3><i class="bi bi-radio"></i> Exchange Format</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <strong>Exchange:</strong> Call Sign + Category Number + Class Identifier + Location Identifier
+                        </div>
+                        
+                        <h5>Category (Number):</h5>
+                        <p>Number of <strong>transceivers capable of transmitting simultaneously</strong>. Examples: 1, 2, 3, etc.</p>
+                        
+                        <h5>Class Identifiers:</h5>
+                        <ul>
+                            <li><span class="badge bg-warning me-2">H</span> <strong>Home:</strong> Inside a permanent livable residence</li>
+                            <li><span class="badge bg-primary me-2">I</span> <strong>Indoor:</strong> Away from home, inside insulated building on permanent foundation (plumbing, heating/cooling)</li>
+                            <li><span class="badge bg-success me-2">O</span> <strong>Outdoor:</strong> Partly or fully exposed building/shelter without typical utilities</li>
+                            <li><span class="badge bg-secondary me-2">M</span> <strong>Mobile/Mobile Stationary:</strong> RV, car, van, trailer, etc. (must have ability to be mobile)</li>
+                        </ul>
+                        
+                        <h5>Location Identifier:</h5>
+                        <p>US/Canadian stations use ARRL/RAC Section. Mexico stations use "MX". All others use "DX".</p>
+                        
+                        <h5>Exchange Examples:</h5>
+                        <ul class="list-unstyled">
+                            <li><code class="text-success">2M EPA</code> - Two mobile stations in East Pennsylvania</li>
+                            <li><code class="text-success">1H GA</code> - One home station in Georgia</li>
+                            <li><code class="text-success">4O WTX</code> - Four outdoor stations in West Texas</li>
+                            <li><code class="text-success">6I MN</code> - Six indoor stations in Minnesota</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h3><i class="bi bi-broadcast"></i> Bands & Modes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Allowed Bands:</h5>
+                                <p><strong>All amateur bands EXCEPT:</strong></p>
+                                <ul>
+                                    <li>12 meters</li>
+                                    <li>17 meters</li>
+                                    <li>30 meters</li>
+                                    <li>60 meters</li>
+                                </ul>
+                                
+                                <h5>Power Limit:</h5>
+                                <div class="alert alert-warning">
+                                    <strong>Maximum 100 Watts PEP</strong> for all stations
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Allowed Modes:</h5>
+                                <p><strong>All modes EXCEPT WSJT modes</strong></p>
+                                <ul>
+                                    <li><strong>Phone:</strong> SSB, AM, FM, DMR, C4FM, etc.</li>
+                                    <li><strong>CW:</strong> Morse code</li>
+                                    <li><strong>Digital:</strong> PSK, RTTY, Olivia, Packet, SSTV, ATV, JS8Call, etc.</li>
+                                </ul>
+                                
+                                <div class="alert alert-danger">
+                                    <strong>Prohibited:</strong> WSJT modes (FT4, FT8, JT65, etc.) - don't support emergency traffic effectively
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h3><i class="bi bi-calculator"></i> Scoring System</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>QSO Points:</h5>
+                        <ul>
+                            <li><strong>Phone contacts:</strong> 1 point each</li>
+                            <li><strong>CW and Digital contacts:</strong> 2 points each</li>
+                        </ul>
+                        
+                        <h5>Contact Rules:</h5>
+                        <ul>
+                            <li>Each station may be worked <strong>once per band-mode combination</strong></li>
+                            <li>Maximum <strong>3 times per band</strong> (Phone, CW, Digital)</li>
+                            <li>Example: K4FUN on 20m = 5 points total (1 Phone + 2 CW + 2 Digital)</li>
+                        </ul>
+                        
+                        <div class="alert alert-success">
+                            <h5>Final Score Formula:</h5>
+                            <strong>Total Score = (Total QSO Points) × (Objective Multiplier + 1)</strong>
+                        </div>
+                        
+                        <h5>Restrictions:</h5>
+                        <ul>
+                            <li>No repeater contacts allowed</li>
+                            <li>No cross-band contacts (except satellites for objectives)</li>
+                            <li>No internet-linked modes</li>
+                            <li>Direct RF contacts only</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h3><i class="bi bi-trophy"></i> Objectives & Multipliers</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Objectives should be your <strong>primary focus</strong> during WFD!</p>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Power & Operation (OM):</h6>
+                                <ul class="small">
+                                    <li><strong>Alternative Power (×1):</strong> 100% non-grid power (batteries, solar, etc.)</li>
+                                    <li><strong>Away from Home (×3):</strong> >0.5 miles from home</li>
+                                    <li><strong>QRP Operation (×4):</strong> <10W phone, <5W CW/digital</li>
+                                    <li><strong>6 Continuous Hours (×2):</strong> Monitor radio for 6+ hours</li>
+                                </ul>
+                                
+                                <h6>Technical (OM):</h6>
+                                <ul class="small">
+                                    <li><strong>Multiple Antennas (×1):</strong> Deploy 2+ antennas, 1+ contact each</li>
+                                    <li><strong>Multiple Modes (×2):</strong> Use 2+ mode groups</li>
+                                    <li><strong>Winlink Email (×1):</strong> Send/receive via RF</li>
+                                    <li><strong>WFD Bulletin (×1):</strong> Copy special bulletin</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Satellites (OM):</h6>
+                                <ul class="small">
+                                    <li><strong>FM Satellite (×2):</strong> 1+ FM satellite contact</li>
+                                    <li><strong>SSB/CW Satellite (×3):</strong> 1+ linear satellite contact</li>
+                                </ul>
+                                <p class="small text-muted">Note: Satellite contacts don't count toward QSO points or category number</p>
+                                
+                                <h6>Band Objectives (OM):</h6>
+                                <ul class="small">
+                                    <li><strong>Six Bands (×6):</strong> 3+ contacts on 6+ different bands</li>
+                                    <li><strong>Twelve Bands (×6):</strong> 3+ contacts on 12+ different bands</li>
+                                </ul>
+                                
+                                <div class="alert alert-info mt-3">
+                                    <small><strong>Multiplier Calculation:</strong> Each completed objective adds to your OM. Base multiplier is always OM+1.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h3><i class="bi bi-file-earmark-text"></i> Log Submission</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>Required Information:</h5>
+                        <ul>
+                            <li>Date and time (UTC) of each contact</li>
+                            <li>Station worked (callsign)</li>
+                            <li>Band and mode</li>
+                            <li>Complete exchange sent and received</li>
+                            <li>Points claimed for each contact</li>
+                        </ul>
+                        
+                        <div class="alert alert-warning">
+                            <h5>Submission Details:</h5>
+                            <ul class="mb-0">
+                                <li><strong>Deadline:</strong> March 1, 2026 at 11:59 UTC</li>
+                                <li><strong>Format:</strong> Cabrillo or ADIF file</li>
+                                <li><strong>Website:</strong> www.winterfieldday.org</li>
+                                <li><strong>Certificate:</strong> Downloaded after submission</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h3><i class="bi bi-chat-text"></i> QSO Examples</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>Phone Example:</h5>
+                        <div class="bg-light p-2 rounded mb-3">
+                            <strong>You (K4SCO):</strong> "CQ Winter Field Day, this is Kilo Four Sierra Charlie Oscar"<br>
+                            <strong>KY4LV:</strong> "Kilo Yankee Four Lima Victor"<br>
+                            <strong>You:</strong> "Kilo Yankee Four Lima Victor, we are three oscar, alpha lima"<br>
+                            <strong>KY4LV:</strong> "I copy three oscar alpha lima, I am one mike, mike oscar"<br>
+                            <strong>You:</strong> "I copy one mike, mike oscar, thanks for the contact, seventy-three"
+                        </div>
+                        
+                        <h5>CW Example:</h5>
+                        <div class="bg-light p-2 rounded mb-3">
+                            <code>
+                            You: CQ WFD K4SCO<br>
+                            KY4LV: KY4LV<br>
+                            You: KY4LV 3O AL 3O AL<br>
+                            KY4LV: RR 1M MO 1M MO<br>
+                            You: RR 73
+                            </code>
+                        </div>
+                        
+                        <h5>Digital Example:</h5>
+                        <div class="bg-light p-2 rounded">
+                            <code>
+                            You: CQ WFD K4SCO 3O AL<br>
+                            KY4LV: KY4LV 1M MO<br>
+                            You: QSL TNX 73<br>
+                            KY4LV: 73
+                            </code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <h5><i class="bi bi-calendar"></i> 2026 Key Dates</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Setup Begins:</strong><br>January 24, 1600 UTC<br>(11 AM EST)</p>
+                        <p><strong>Event Period:</strong><br>January 24-25<br>1600 UTC Sat - 2159 UTC Sun</p>
+                        <p><strong>Log Deadline:</strong><br>March 1, 2026<br>11:59 UTC</p>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-success text-white">
+                        <h5><i class="bi bi-list-check"></i> Quick Reference</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Exchange Format:</h6>
+                        <p class="small"><strong>[Category][Class] [Section]</strong><br>
+                        Examples: 2M EPA, 1H GA, 4O WTX</p>
+                        
+                        <h6>Classes:</h6>
+                        <ul class="small">
+                            <li><strong>H</strong> - Home station</li>
+                            <li><strong>I</strong> - Indoor station</li>
+                            <li><strong>O</strong> - Outdoor station</li>
+                            <li><strong>M</strong> - Mobile station</li>
+                        </ul>
+                        
+                        <h6>Points:</h6>
+                        <ul class="small">
+                            <li>Phone: 1 point</li>
+                            <li>CW/Digital: 2 points</li>
+                            <li>Max 100W power</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-warning text-dark">
+                        <h5><i class="bi bi-exclamation-triangle"></i> Safety First</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small">
+                            <li><strong>Plan ahead:</strong> Check weather conditions</li>
+                            <li><strong>Stay warm:</strong> Proper winter clothing</li>
+                            <li><strong>Know limits:</strong> Pack up if unsafe</li>
+                            <li><strong>Emergency prep:</strong> Practice makes perfect</li>
+                            <li><strong>Have fun:</strong> It's an operating event!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="bi bi-link-45deg"></i> Official Resources</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><a href="https://winterfieldday.org" target="_blank" class="btn btn-outline-primary btn-sm mb-2 w-100">
+                                <i class="bi bi-globe"></i> Winter Field Day Website
+                            </a></li>
+                            <li><a href="https://winterfieldday.org/sop.php" target="_blank" class="btn btn-outline-primary btn-sm mb-2 w-100">
+                                <i class="bi bi-book"></i> Official SOP/Rules
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h5><i class="bi bi-star"></i> 2026 Changes</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small">
+                            <li>Several objectives added</li>
+                            <li>Alternative power objective changed (laptop/HVAC requirements)</li>
+                            <li>Additional 12-band objective added</li>
+                            <li>Additional appendix clarifications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

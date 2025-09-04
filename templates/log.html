@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+
+{% block title %}Log Contact{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h2>Log New Contact</h2>
+                        <div class="text-end">
+                            <div id="current-time" class="fs-6 fw-bold text-primary"></div>
+                            <div id="contest-status" class="small text-muted"></div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {% if not station_info %}
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle"></i> <strong>Station Setup Required:</strong> 
+                                Please <a href="{{ url_for('station_setup') }}" class="alert-link">configure your station setup</a> 
+                                to automatically populate the exchange sent field.
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i> <strong>Station {{ station_info.station_callsign }}:</strong> 
+                                Exchange automatically set to <strong>{{ station_info.wfd_category }} {{ station_info.arrl_section }}</strong>
+                                <a href="{{ url_for('station_setup') }}" class="alert-link ms-2">
+                                    <i class="bi bi-gear"></i> Edit Setup
+                                </a>
+                            </div>
+                        {% endif %}
+                        
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <!-- Duplicate Contact Warning Area -->
+                        <div id="duplicate-warning" style="display: none;"></div>
+                        
+                        <!-- Callsign Lookup Results Area -->
+                        <div id="callsign-lookup" style="display: none;"></div>
+                        
+                        <form method="POST">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.callsign.label(class="form-label") }}
+                                    <div class="input-group">
+                                        {{ form.callsign(class="form-control form-control-lg", placeholder="W1AW") }}
+                                        <button type="button" id="lookup-btn" class="btn btn-outline-info" title="Lookup callsign information">
+                                            <i class="bi bi-search"></i> Lookup
+                                        </button>
+                                    </div>
+                                    {% if form.callsign.errors %}
+                                        <div class="text-danger">{{ form.callsign.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.frequency.label(class="form-label") }}
+                                    {{ form.frequency(class="form-control", placeholder="14.205") }}
+                                    {% if form.frequency.errors %}
+                                        <div class="text-danger">{{ form.frequency.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.mode.label(class="form-label") }}
+                                    {{ form.mode(class="form-select") }}
+                                    {% if form.mode.errors %}
+                                        <div class="text-danger">{{ form.mode.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    {{ form.rst_sent.label(class="form-label") }}
+                                    {{ form.rst_sent(class="form-control") }}
+                                    {% if form.rst_sent.errors %}
+                                        <div class="text-danger">{{ form.rst_sent.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    {{ form.rst_received.label(class="form-label") }}
+                                    {{ form.rst_received(class="form-control") }}
+                                    {% if form.rst_received.errors %}
+                                        <div class="text-danger">{{ form.rst_received.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    {{ form.operator_callsign.label(class="form-label") }}
+                                    {{ form.operator_callsign(class="form-select") }}
+                                    {% if form.operator_callsign.errors %}
+                                        <div class="text-danger">{{ form.operator_callsign.errors[0] }}</div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">Select which operator is making this contact</small>
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    {{ form.exchange_sent.label(class="form-label") }}
+                                    {{ form.exchange_sent(class="form-control", placeholder="2M EPA") }}
+                                    <small class="form-text text-muted">
+                                        {% if station_info %}
+                                            Auto-populated from station setup. Format: [Number][Class] + Section
+                                        {% else %}
+                                            Format: [Number][Class] + Section (e.g., "2M EPA", "1H GA", "3O WTX")
+                                        {% endif %}
+                                    </small>
+                                    {% if form.exchange_sent.errors %}
+                                        <div class="text-danger">
+                                            <i class="bi bi-exclamation-triangle"></i> {{ form.exchange_sent.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    {{ form.exchange_received.label(class="form-label") }}
+                                    {{ form.exchange_received(class="form-control", placeholder="1H CA") }}
+                                    <small class="form-text text-muted">Format: [Number][Class] + Section - ARRL section will be auto-extracted</small>
+                                    {% if form.exchange_received.errors %}
+                                        <div class="text-danger">
+                                            <i class="bi bi-exclamation-triangle"></i> {{ form.exchange_received.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3">
+                                {{ form.notes.label(class="form-label") }}
+                                {{ form.notes(class="form-control", rows="3", placeholder="Optional notes...") }}
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{{ url_for('home') }}" class="btn btn-secondary me-md-2">Cancel</a>
+                                {{ form.submit(class="btn btn-success btn-lg") }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="bi bi-info-circle"></i> Winter Field Day Exchange Format</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info mb-3">
+                                <strong>Required Format:</strong> [Number][Class] + ARRL Section (exactly 2 parts separated by space)
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Valid Classes:</h6>
+                                    <ul class="list-unstyled">
+                                        <li><span class="badge bg-warning me-2">H</span> Home station</li>
+                                        <li><span class="badge bg-primary me-2">I</span> Indoor station</li>
+                                        <li><span class="badge bg-success me-2">O</span> Outdoor station</li>
+                                        <li><span class="badge bg-secondary me-2">M</span> Mobile station</li>
+                                    </ul>
+                                    <small class="text-muted">Number = simultaneous transmitters (1-9+)</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Valid Examples:</h6>
+                                    <ul class="list-unstyled">
+                                        <li><code class="text-success">2M EPA</code> ✓ Correct</li>
+                                        <li><code class="text-success">1H GA</code> ✓ Correct</li>
+                                        <li><code class="text-success">3O WTX</code> ✓ Correct</li>
+                                        <li><code class="text-danger">2M</code> ✗ Missing section</li>
+                                        <li><code class="text-danger">EPA</code> ✗ Missing category</li>
+                                        <li><code class="text-danger">2B EPA</code> ✗ Invalid class letter</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3 p-2 bg-light rounded">
+                                <small><strong>Note:</strong> ARRL sections will be automatically extracted and validated. 
+                                Must be valid sections like WI, CA, NY, TX, etc.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-focus callsign field
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('callsign').focus();
+    });
+    
+    // Auto-uppercase text fields
+    const uppercaseFields = ['callsign', 'exchange_sent', 'exchange_received'];
+    
+    uppercaseFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+        }
+    });
+    
+    // Duplicate contact checking
+    let dupeCheckTimeout;
+    
+    function checkDuplicateContact() {
+        const callsign = document.getElementById('callsign').value.trim();
+        const frequency = document.getElementById('frequency').value.trim();
+        const mode = document.getElementById('mode').value;
+        
+        if (!callsign || !frequency || !mode) {
+            hideDuplicateWarning();
+            return;
+        }
+        
+        // Clear existing timeout
+        if (dupeCheckTimeout) {
+            clearTimeout(dupeCheckTimeout);
+        }
+        
+        // Delay the API call to avoid too many requests while typing
+        dupeCheckTimeout = setTimeout(() => {
+            fetch(`/check_duplicate?callsign=${encodeURIComponent(callsign)}&frequency=${encodeURIComponent(frequency)}&mode=${encodeURIComponent(mode)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.warnings && data.warnings.length > 0) {
+                        showDuplicateWarning(data.warnings);
+                    } else {
+                        hideDuplicateWarning();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking for duplicates:', error);
+                    hideDuplicateWarning();
+                });
+        }, 500);
+    }
+    
+    function showDuplicateWarning(warnings) {
+        const warningDiv = document.getElementById('duplicate-warning');
+        let html = '';
+        
+        warnings.forEach(warning => {
+            html += `<div class="alert alert-${warning.type} alert-dismissible fade show">
+                <i class="bi bi-exclamation-triangle"></i> <strong>Duplicate Warning:</strong> ${warning.message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>`;
+        });
+        
+        warningDiv.innerHTML = html;
+        warningDiv.style.display = 'block';
+    }
+    
+    function hideDuplicateWarning() {
+        const warningDiv = document.getElementById('duplicate-warning');
+        warningDiv.style.display = 'none';
+        warningDiv.innerHTML = '';
+    }
+    
+    // Add event listeners for duplicate checking
+    document.getElementById('callsign').addEventListener('input', checkDuplicateContact);
+    document.getElementById('frequency').addEventListener('input', checkDuplicateContact);
+    document.getElementById('mode').addEventListener('change', checkDuplicateContact);
+    
+    // Callsign lookup functionality
+    let lookupTimeout;
+    
+    function lookupCallsign(callsign, manual = false) {
+        if (!callsign || callsign.length < 3) {
+            hideCallsignLookup();
+            return;
+        }
+        
+        // Show loading state for manual lookups
+        if (manual) {
+            showCallsignLookup([{
+                type: 'info',
+                message: `<i class="bi bi-hourglass-split"></i> Looking up ${callsign}...`,
+                loading: true
+            }]);
+        }
+        
+        // Clear existing timeout
+        if (lookupTimeout) {
+            clearTimeout(lookupTimeout);
+        }
+        
+        // Delay API call for automatic lookups
+        const delay = manual ? 0 : 1500;
+        
+        lookupTimeout = setTimeout(() => {
+            fetch(`/lookup_callsign?callsign=${encodeURIComponent(callsign)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        if (manual) {
+                            showCallsignLookup([{
+                                type: 'warning',
+                                message: `<i class="bi bi-exclamation-triangle"></i> Lookup failed: ${data.error}`
+                            }]);
+                        } else {
+                            hideCallsignLookup();
+                        }
+                    } else {
+                        displayCallsignInfo(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Callsign lookup error:', error);
+                    if (manual) {
+                        showCallsignLookup([{
+                            type: 'danger',
+                            message: `<i class="bi bi-exclamation-circle"></i> Network error during lookup`
+                        }]);
+                    } else {
+                        hideCallsignLookup();
+                    }
+                });
+        }, delay);
+    }
+    
+    function displayCallsignInfo(data) {
+        const info = [];
+        
+        if (data.name) {
+            info.push(`<strong>Name:</strong> ${data.name}`);
+        }
+        if (data.qth) {
+            info.push(`<strong>QTH:</strong> ${data.qth}`);
+        }
+        if (data.grid) {
+            info.push(`<strong>Grid:</strong> ${data.grid}`);
+        }
+        if (data.country) {
+            info.push(`<strong>Country:</strong> ${data.country}`);
+        }
+        if (data.state) {
+            info.push(`<strong>State:</strong> ${data.state}`);
+        }
+        
+        const sourceInfo = data.source ? `<small class="text-muted">Source: ${data.source}</small>` : '';
+        
+        if (info.length > 0) {
+            showCallsignLookup([{
+                type: 'success',
+                message: `<i class="bi bi-person-check"></i> <strong>${data.callsign}</strong><br>${info.join(' | ')}${sourceInfo ? '<br>' + sourceInfo : ''}`,
+                persistent: true
+            }]);
+        } else {
+            showCallsignLookup([{
+                type: 'info',
+                message: `<i class="bi bi-info-circle"></i> ${data.callsign} found but no additional information available<br>${sourceInfo}`
+            }]);
+        }
+    }
+    
+    function showCallsignLookup(messages) {
+        const lookupDiv = document.getElementById('callsign-lookup');
+        let html = '';
+        
+        messages.forEach(msg => {
+            const alertClass = msg.loading ? 'alert-info' : `alert-${msg.type}`;
+            const dismissButton = msg.persistent ? '' : '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+            
+            html += `<div class="alert ${alertClass} alert-dismissible fade show">
+                ${msg.message}
+                ${dismissButton}
+            </div>`;
+        });
+        
+        lookupDiv.innerHTML = html;
+        lookupDiv.style.display = 'block';
+    }
+    
+    function hideCallsignLookup() {
+        const lookupDiv = document.getElementById('callsign-lookup');
+        lookupDiv.style.display = 'none';
+        lookupDiv.innerHTML = '';
+    }
+    
+    // Add event listeners for callsign lookup
+    document.getElementById('lookup-btn').addEventListener('click', function() {
+        const callsign = document.getElementById('callsign').value.trim().toUpperCase();
+        if (callsign) {
+            lookupCallsign(callsign, true);
+        } else {
+            showCallsignLookup([{
+                type: 'warning',
+                message: '<i class="bi bi-exclamation-triangle"></i> Please enter a callsign first'
+            }]);
+        }
+    });
+    
+    // Auto-lookup when callsign field loses focus (optional)
+    document.getElementById('callsign').addEventListener('blur', function() {
+        const callsign = this.value.trim().toUpperCase();
+        if (callsign && callsign.length >= 3) {
+            lookupCallsign(callsign, false);
+        }
+    });
+    
+    // Allow Enter key to trigger lookup
+    document.getElementById('callsign').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const callsign = this.value.trim().toUpperCase();
+            if (callsign) {
+                lookupCallsign(callsign, true);
+            }
+        }
+    });
+
+    // Contest Clock
+    const WFD_START = new Date('2026-01-24T16:00:00Z');
+    const WFD_END = new Date('2026-01-25T21:59:59Z');
+    
+    function updateClock() {
+        const now = new Date();
+        const timeElement = document.getElementById('current-time');
+        const statusElement = document.getElementById('contest-status');
+        
+        if (!timeElement || !statusElement) return;
+        
+        const utcTime = now.toUTCString().split(' ')[4] + ' UTC';
+        timeElement.textContent = utcTime;
+        
+        if (now < WFD_START) {
+            const timeToStart = WFD_START - now;
+            const hours = Math.floor(timeToStart / (1000 * 60 * 60));
+            const minutes = Math.floor((timeToStart % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (hours > 0) {
+                statusElement.textContent = `Starts in ${hours}h ${minutes}m`;
+            } else {
+                statusElement.textContent = `Starts in ${minutes}m`;
+            }
+            statusElement.className = 'small text-warning';
+        } else if (now >= WFD_START && now <= WFD_END) {
+            const remaining = WFD_END - now;
+            const remainHours = Math.floor(remaining / (1000 * 60 * 60));
+            const remainMins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            
+            statusElement.innerHTML = `<strong>ACTIVE!</strong> ${remainHours}h ${remainMins}m left`;
+            statusElement.className = 'small text-success';
+        } else {
+            statusElement.textContent = 'Contest completed';
+            statusElement.className = 'small text-muted';
+        }
+    }
+    
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+{% endblock %}

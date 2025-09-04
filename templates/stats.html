@@ -1,0 +1,614 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1>Winter Field Day Statistics</h1>
+            </div>
+        </div>
+
+        {% if station_info %}
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="alert alert-primary">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <strong><i class="bi bi-broadcast"></i> Station {{ station_info.station_callsign }}</strong> 
+                            operated by {{ station_info.operator_name }} ({{ station_info.operator_callsign }})
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Category:</strong> <span class="badge bg-white text-primary">{{ station_info.wfd_category }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Section:</strong> {{ station_info.arrl_section }}
+                            {% if station_info.location %} | {{ station_info.location }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-header bg-success text-white">
+                        <h5>Total Contacts</h5>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="card-title display-4">{{ total }}</h2>
+                        <p class="card-text">Contacts Logged</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-header bg-warning text-dark">
+                        <h5>WFD Score</h5>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="card-title display-4 text-warning">{{ score_data.final_score }}</h2>
+                        <p class="card-text">Final Score</p>
+                        <small class="text-muted">
+                            {{ score_data.contact_points }} pts × {{ score_data.multipliers }} mult × (1+{{ score_data.objective_multiplier }})
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>Contacts by Mode</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if modes %}
+                        <div class="list-group list-group-flush">
+                            {% for mode, count in modes %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>{{ mode }}</strong>
+                                <span class="badge bg-primary rounded-pill">{{ count }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-muted">No contacts yet</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5>Contacts by Frequency</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if bands %}
+                        <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                            {% for freq, count in bands %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>{{ freq }} MHz</strong>
+                                <span class="badge bg-info rounded-pill">{{ count }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-muted">No contacts yet</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if operators %}
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5><i class="bi bi-people"></i> Contacts by Operator</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                            {% for operator, count in operators %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>{{ operator }}</strong>
+                                <span class="badge bg-success rounded-pill">{{ count }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="bi bi-award"></i> Multi-Operator Stats</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <h3 class="text-info">{{ operators|length }}</h3>
+                                <p class="mb-1">Active Operators</p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <h3 class="text-info">{{ (total / operators|length)|round(1) if operators|length > 0 else 0 }}</h3>
+                                <p class="mb-1">Avg Contacts/Op</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            {% if operators %}
+                                {% set top_op = operators|sort(attribute=1)|reverse|first %}
+                                <p><strong>Top Operator:</strong> {{ top_op[0] }} ({{ top_op[1] }} contacts)</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Band Activity Charts Section -->
+        {% if total > 0 %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2><i class="bi bi-bar-chart"></i> Band Activity Analysis</h2>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>Contacts by Band</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="bandChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5>Mode Distribution by Band</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="modeByBandChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5>Hourly Activity</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="hourlyChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5>Cumulative Contacts Over Time</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="cumulativeChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h5>Mode Activity by Hour</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="modeHourlyChart" width="800" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h5><i class="bi bi-calculator"></i> Detailed Score Breakdown</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <h6>Contact Points:</h6>
+                                <p class="mb-1"><strong>{{ score_data.contact_points }} points</strong></p>
+                                <small class="text-muted">CW/Digital: 2pts each | Phone: 1pt each</small>
+                            </div>
+                            <div class="col-6">
+                                <h6>Multipliers:</h6>
+                                <p class="mb-1"><strong>{{ score_data.multipliers }} sections</strong></p>
+                                <small class="text-muted">Unique ARRL/RAC sections worked</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6">
+                                <h6>Base Score:</h6>
+                                <p class="mb-1"><strong>{{ score_data.base_score }}</strong></p>
+                                <small class="text-muted">{{ score_data.contact_points }} × {{ score_data.multipliers }}</small>
+                            </div>
+                            <div class="col-6">
+                                <h6>Objective Bonus:</h6>
+                                <p class="mb-1"><strong>{{ score_data.objective_multiplier }}× multiplier</strong></p>
+                                <small class="text-muted">{{ score_data.completed_objectives_count }} objectives completed</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <h5 class="text-warning">Final Score: {{ score_data.final_score }}</h5>
+                            <small class="text-muted">{{ score_data.base_score }} × (1 + {{ score_data.objective_multiplier }})</small>
+                        </div>
+                        
+                        {% if score_data.unique_sections %}
+                        <div class="mt-3">
+                            <h6>Sections Worked:</h6>
+                            <div class="d-flex flex-wrap gap-1">
+                                {% for section in score_data.unique_sections %}
+                                <span class="badge bg-primary">{{ section }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5>Winter Field Day Scoring Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Point Values:</h6>
+                                <ul>
+                                    <li><strong>Phone contacts:</strong> 1 point each</li>
+                                    <li><strong>CW/Digital contacts:</strong> 2 points each</li>
+                                </ul>
+                                
+                                <h6>Multipliers:</h6>
+                                <ul>
+                                    <li>Each different ARRL/RAC section worked</li>
+                                    <li>Each different DX country worked</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Bonus Points:</h6>
+                                <ul>
+                                    <li><strong>Media publicity:</strong> 100 points</li>
+                                    <li><strong>Outdoor setup:</strong> 100 points</li>
+                                    <li><strong>Low power (≤20W):</strong> 100 points</li>
+                                    <li><strong>Emergency power:</strong> 100 points</li>
+                                    <li><strong>Public location:</strong> 100 points</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info mt-3">
+                            <strong>Final Score = (Contact Points × Multipliers) + Bonus Points</strong>
+                        </div>
+                    </div>
+                </div>
+
+                {% if total > 0 %}
+                <div class="card mt-4">
+                    <div class="card-header bg-success text-white">
+                        <h5><i class="bi bi-download"></i> Log Export</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Export your contacts for Winter Field Day submission or backup:</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-grid">
+                                    <a href="{{ url_for('download_cabrillo') }}" class="btn btn-outline-success">
+                                        <i class="bi bi-file-text"></i> Download Cabrillo (.log)
+                                    </a>
+                                </div>
+                                <small class="text-muted mt-1 d-block">Required format for Winter Field Day submission</small>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-grid">
+                                    <a href="{{ url_for('download_adif') }}" class="btn btn-outline-info">
+                                        <i class="bi bi-file-earmark-text"></i> Download ADIF (.adif)
+                                    </a>
+                                </div>
+                                <small class="text-muted mt-1 d-block">Standard amateur radio logging format</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('log_contact') }}" class="btn btn-success btn-lg">Log More Contacts</a>
+                <a href="{{ url_for('home') }}" class="btn btn-primary btn-lg ms-2">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Chart.js configuration for dark mode compatibility
+Chart.defaults.color = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333';
+
+{% if total > 0 %}
+// Band Activity Chart
+const bandData = {{ band_activity.band_counts | tojson }};
+const bandLabels = Object.keys(bandData);
+const bandValues = Object.values(bandData);
+
+const bandChart = new Chart(document.getElementById('bandChart'), {
+    type: 'doughnut',
+    data: {
+        labels: bandLabels,
+        datasets: [{
+            data: bandValues,
+            backgroundColor: [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', 
+                '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
+            ],
+            borderColor: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#333' : '#fff',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                }
+            }
+        }
+    }
+});
+
+// Mode by Band Chart (Stacked Bar)
+const modeByBandData = {{ band_activity.modes_per_band | tojson }};
+const allModes = new Set();
+Object.values(modeByBandData).forEach(bandModes => {
+    Object.keys(bandModes).forEach(mode => allModes.add(mode));
+});
+const modes = Array.from(allModes);
+const modeColors = {
+    'CW': '#FF6384',
+    'SSB': '#36A2EB', 
+    'USB': '#36A2EB',
+    'LSB': '#36A2EB',
+    'FM': '#FFCE56',
+    'FT8': '#4BC0C0',
+    'FT4': '#9966FF',
+    'RTTY': '#FF9F40',
+    'PSK31': '#FF6384',
+    'JS8': '#C9CBCF'
+};
+
+const modeByBandChart = new Chart(document.getElementById('modeByBandChart'), {
+    type: 'bar',
+    data: {
+        labels: bandLabels,
+        datasets: modes.map(mode => ({
+            label: mode,
+            data: bandLabels.map(band => modeByBandData[band] ? modeByBandData[band][mode] || 0 : 0),
+            backgroundColor: modeColors[mode] || '#999999',
+            borderColor: modeColors[mode] || '#999999',
+            borderWidth: 1
+        }))
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                stacked: true,
+                ticks: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                },
+                grid: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
+                }
+            },
+            y: {
+                stacked: true,
+                ticks: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                },
+                grid: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                }
+            }
+        }
+    }
+});
+
+// Hourly Activity Chart
+const hourlyData = {{ temporal_activity.hourly_counts | tojson }};
+const hourlyLabels = Array.from({length: 24}, (_, i) => String(i).padStart(2, '0') + ':00');
+const hourlyValues = hourlyLabels.map((_, hour) => hourlyData[hour] || 0);
+
+const hourlyChart = new Chart(document.getElementById('hourlyChart'), {
+    type: 'line',
+    data: {
+        labels: hourlyLabels,
+        datasets: [{
+            label: 'Contacts per Hour',
+            data: hourlyValues,
+            borderColor: '#36A2EB',
+            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                ticks: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                },
+                grid: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                },
+                grid: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                }
+            }
+        }
+    }
+});
+
+// Cumulative Contacts Chart
+const cumulativeData = {{ temporal_activity.cumulative_data | tojson }};
+const cumulativeLabels = cumulativeData.map(item => item.time);
+const cumulativeValues = cumulativeData.map(item => item.count);
+
+const cumulativeChart = new Chart(document.getElementById('cumulativeChart'), {
+    type: 'line',
+    data: {
+        labels: cumulativeLabels,
+        datasets: [{
+            label: 'Total Contacts',
+            data: cumulativeValues,
+            borderColor: '#4BC0C0',
+            backgroundColor: 'rgba(75, 192, 192, 0.1)',
+            fill: true,
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                ticks: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333',
+                    maxTicksLimit: 10
+                },
+                grid: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                },
+                grid: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                }
+            }
+        }
+    }
+});
+
+// Mode Activity by Hour Chart
+const modeHourlyData = {{ mode_statistics.mode_hourly | tojson }};
+const modeHourlyChart = new Chart(document.getElementById('modeHourlyChart'), {
+    type: 'line',
+    data: {
+        labels: hourlyLabels,
+        datasets: Object.keys(modeHourlyData).map(mode => ({
+            label: mode,
+            data: hourlyLabels.map((_, hour) => modeHourlyData[mode][hour] || 0),
+            borderColor: modeColors[mode] || '#999999',
+            backgroundColor: (modeColors[mode] || '#999999') + '20',
+            fill: false,
+            tension: 0.1
+        }))
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                ticks: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                },
+                grid: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                },
+                grid: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                }
+            }
+        }
+    }
+});
+{% endif %}
+</script>
+{% endblock %}

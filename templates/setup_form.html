@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="bi bi-gear"></i> {{ title }}</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="{{ url_for('station_setup') }}">Station Setups</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="card-body">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <form method="POST">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    {{ form.setup_name.label(class="form-label") }}
+                                    {{ form.setup_name(class="form-control", placeholder="e.g., Home Station, Portable Setup, Contest Station") }}
+                                    {% if form.setup_name.errors %}
+                                        <div class="text-danger">{{ form.setup_name.errors[0] }}</div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">Give this setup a descriptive name to distinguish it from other setups</small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.station_callsign.label(class="form-label") }}
+                                    {{ form.station_callsign(class="form-control", placeholder="W1AW") }}
+                                    {% if form.station_callsign.errors %}
+                                        <div class="text-danger">{{ form.station_callsign.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.wfd_category.label(class="form-label") }}
+                                    {{ form.wfd_category(class="form-select") }}
+                                    {% if form.wfd_category.errors %}
+                                        <div class="text-danger">{{ form.wfd_category.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.operator_name.label(class="form-label") }}
+                                    {{ form.operator_name(class="form-control", placeholder="John Smith") }}
+                                    {% if form.operator_name.errors %}
+                                        <div class="text-danger">{{ form.operator_name.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.operator_callsign.label(class="form-label") }}
+                                    {{ form.operator_callsign(class="form-control", placeholder="N1ABC") }}
+                                    {% if form.operator_callsign.errors %}
+                                        <div class="text-danger">{{ form.operator_callsign.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.arrl_section.label(class="form-label") }}
+                                    {{ form.arrl_section(class="form-select") }}
+                                    {% if form.arrl_section.errors %}
+                                        <div class="text-danger">{{ form.arrl_section.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.power_level.label(class="form-label") }}
+                                    {{ form.power_level(class="form-select") }}
+                                    {% if form.power_level.errors %}
+                                        <div class="text-danger">{{ form.power_level.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
+                                    {{ form.location.label(class="form-label") }}
+                                    {{ form.location(class="form-control", placeholder="City, State/Province") }}
+                                    <small class="form-text text-muted">Optional: Your operating location</small>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    {{ form.grid_square.label(class="form-label") }}
+                                    {{ form.grid_square(class="form-control", placeholder="FN20") }}
+                                    <small class="form-text text-muted">Optional: Maidenhead grid square</small>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form.additional_operators.label(class="form-label") }}
+                                {{ form.additional_operators(class="form-control", rows="2", placeholder="Additional callsigns (one per line)") }}
+                                <small class="form-text text-muted">Optional: List additional operators for multi-op stations</small>
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form.equipment_notes.label(class="form-label") }}
+                                {{ form.equipment_notes(class="form-control", rows="3", placeholder="Radio equipment, antennas, power source details...") }}
+                                <small class="form-text text-muted">Optional: Equipment and setup notes</small>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{{ url_for('station_setup') }}" class="btn btn-secondary me-md-2">Cancel</a>
+                                {{ form.submit(class="btn btn-success btn-lg") }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="bi bi-info-circle"></i> Winter Field Day Categories</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Home Stations (H)</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>1H-5H:</strong> 1-5 simultaneous transmitters</li>
+                                    <li>Operating from your home station</li>
+                                    <li>Normal AC power allowed</li>
+                                </ul>
+                                
+                                <h6>Indoor Stations (I)</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>1I-5I:</strong> 1-5 simultaneous transmitters</li>
+                                    <li>Indoor setup away from home</li>
+                                    <li>Hotels, libraries, community centers</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Outdoor Stations (O)</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>1O-5O:</strong> 1-5 simultaneous transmitters</li>
+                                    <li>Outdoor operation required</li>
+                                    <li>Parks, parking lots, fields</li>
+                                </ul>
+                                
+                                <h6>Mobile Stations (M)</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>1M-5M:</strong> 1-5 simultaneous transmitters</li>
+                                    <li>Vehicle-based operation</li>
+                                    <li>Moving or stationary vehicles</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

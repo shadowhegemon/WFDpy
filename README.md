@@ -142,6 +142,40 @@ Configure your station information in the **Station Setup** page:
 - Toggle between light and dark themes using the button in the navigation
 - Theme preference is automatically saved and persists between sessions
 
+## 📸 Screenshots
+
+### Home Page - Light Mode
+![Home Page Light Mode](screen%20caps/Screenshot%202025-09-04%20113542.png)
+*Main dashboard showing real-time GMT/Central time clock, contest countdown, station information, and quick actions in light theme*
+
+### Home Page - Dark Mode  
+![Home Page Dark Mode](screen%20caps/Screenshot%202025-09-04%20113419.png)
+*Same dashboard in dark mode, demonstrating the seamless theme integration with the real-time clock*
+
+### Contact Logging - Real-time Clock Integration
+![Contact Logging](screen%20caps/Screenshot%202025-09-04%20113439.png)
+*Log contact form showing the navigation clock working during active contest operations*
+
+### Station Setup - Timezone Configuration
+![Station Setup](screen%20caps/Screenshot%202025-09-04%20113510.png)
+*Station configuration page where timezone can be set automatically from ARRL section or manually overridden*
+
+### Statistics Dashboard
+![Statistics Page](screen%20caps/Screenshot%202025-09-04%20113451.png)
+*Comprehensive statistics view with real-time clock for timing reference during contest analysis*
+
+### Contest Map - ARRL Sections
+![Contact Map](screen%20caps/Screenshot%202025-09-04%20113500.png)
+*Interactive map showing worked ARRL sections with timezone-aware clock for coordination*
+
+### WFD Objectives Tracking
+![WFD Objectives](screen%20caps/Screenshot%202025-09-04%20113519.png)
+*Bonus objective tracking with multiplier management and real-time timing*
+
+### Official Rules Reference
+![WFD Rules](screen%20caps/Screenshot%202025-09-04%20113528.png)
+*Built-in rules reference with contest timing information and real-time clock for quick reference*
+
 ## 📊 Contest Features
 
 ### Winter Field Day Scoring

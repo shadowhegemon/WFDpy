@@ -1,0 +1,79 @@
+name: wfd-logger-dev
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python runtime - more specific version range for development
+  - python>=3.9,<3.14
+  
+  # Core web framework
+  - flask>=2.3.0,<3.0
+  - flask-sqlalchemy>=3.0.0,<4.0
+  - flask-wtf>=1.1.0,<2.0
+  - wtforms>=3.0.0,<4.0
+  
+  # Database and data handling
+  - sqlalchemy>=2.0.0,<2.1
+  - sqlite  # explicitly include SQLite
+  
+  # Web server and deployment
+  - gunicorn>=20.0.0  # for production deployment
+  - waitress>=2.1.0   # alternative WSGI server
+  
+  # Development tools
+  - pytest>=7.0.0
+  - pytest-flask>=1.2.0
+  - pytest-cov>=4.0.0  # coverage via pytest
+  - coverage>=7.0.0
+  - black>=23.0.0       # code formatting
+  - flake8>=6.0.0       # linting
+  - isort>=5.12.0       # import sorting
+  - mypy>=1.0.0         # type checking
+  
+  # Development utilities
+  - python-dotenv>=1.0.0  # environment variables
+  - watchdog>=3.0.0       # file watching for development
+  - pre-commit>=3.0.0     # git hooks
+  
+  # Documentation
+  - markdown>=3.4.0
+  - mkdocs>=1.5.0         # for building docs
+  - mkdocs-material>=9.0.0
+  
+  # System and performance
+  - psutil>=5.9.0         # system monitoring
+  - requests>=2.28.0      # HTTP requests (for external APIs)
+  
+  # Build and packaging tools
+  - setuptools>=65.0
+  - wheel>=0.40.0
+  - build>=0.10.0
+  - twine>=4.0.0          # for PyPI uploads
+  - pip>=23.0.0
+  
+  # Development server enhancements
+  - flask-debugtoolbar>=0.13.0  # debug toolbar
+  
+  # Data validation and serialization
+  - jsonschema>=4.17.0
+  - pydantic>=2.0.0       # data validation
+  
+  # Optional: advanced features
+  - redis-py>=4.5.0       # if Redis session storage is needed
+  - celery>=5.2.0         # if background tasks are needed
+  
+  # Pip dependencies
+  - pip
+  - pip:
+    # Flask extensions that might not be in conda
+    - Flask-Login>=0.6.2
+    - Flask-Migrate>=4.0.0
+    - Flask-Mail>=0.9.1
+    # Add other pip-only packages as needed
+
+# Environment variables for development
+variables:
+  FLASK_APP: app.py
+  FLASK_ENV: development
+  FLASK_DEBUG: "1"
+  WFD_LOGGER_ENV: development

@@ -1,0 +1,62 @@
+name: wfd-logger
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python runtime
+  - python>=3.9,<3.14
+  
+  # Core web framework
+  - flask>=2.3.0,<3.0
+  - flask-sqlalchemy>=3.0.0
+  - flask-wtf>=1.1.0
+  - wtforms>=3.0.0
+  
+  # Database
+  - sqlalchemy>=2.0.0,<2.1
+  
+  # Development and testing
+  - pytest>=7.0.0
+  - pytest-flask
+  - coverage
+  - black
+  - flake8
+  
+  # Optional: for development server improvements
+  - python-dotenv
+  - gunicorn  # for production deployment
+  
+  # Build tools (for potential packaging)
+  - setuptools>=65.0
+  - wheel
+  - pip
+  
+  # Documentation (if needed)
+  - markdown
+  
+  # Optional: performance monitoring
+  - psutil  # for system monitoring
+  
+  # Pip dependencies that aren't available via conda
+  - pip
+  - pip:
+    # Add any pip-only packages here if needed
+    # - some-pip-only-package
+    
+# Environment variables
+variables:
+  FLASK_APP: app.py
+  FLASK_ENV: development
+  
+# Post-install script information
+# To create this environment, run:
+# conda env create -f environment.yml
+# 
+# To activate the environment:
+# conda activate wfd-logger
+#
+# To update the environment:
+# conda env update -f environment.yml
+#
+# To remove the environment:
+# conda env remove -n wfd-logger

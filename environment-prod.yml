@@ -1,0 +1,55 @@
+name: wfd-logger-prod
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python runtime - stable version for production
+  - python>=3.9,<3.12  # more conservative range for production
+  
+  # Core web framework - pinned versions for stability
+  - flask>=2.3.0,<2.4
+  - flask-sqlalchemy>=3.0.0,<3.1
+  - flask-wtf>=1.1.0,<1.2
+  - wtforms>=3.0.0,<3.1
+  
+  # Database
+  - sqlalchemy>=2.0.0,<2.1
+  - sqlite  # database engine
+  
+  # Production web server
+  - gunicorn>=20.0.0,<21.0  # primary WSGI server
+  - gevent>=22.0.0          # async support for gunicorn
+  
+  # Security and performance
+  - cryptography>=40.0.0    # security libraries
+  - bcrypt>=4.0.0           # password hashing
+  
+  # System monitoring and logging
+  - psutil>=5.9.0           # system monitoring
+  
+  # Environment management
+  - python-dotenv>=1.0.0    # environment variables
+  
+  # Minimal build tools for production
+  - pip>=23.0.0
+  
+  # Pip dependencies for production
+  - pip
+  - pip:
+    # Production-specific packages that aren't in conda
+    # - sentry-sdk[flask]>=1.32.0  # error tracking
+    # - prometheus-flask-exporter>=0.22.0  # metrics
+    
+# Production environment variables
+variables:
+  FLASK_APP: app.py
+  FLASK_ENV: production
+  FLASK_DEBUG: "0"
+  WFD_LOGGER_ENV: production
+  
+# Production deployment notes:
+# 1. Create environment: conda env create -f environment-prod.yml
+# 2. Activate: conda activate wfd-logger-prod
+# 3. Run with: gunicorn --bind 0.0.0.0:8000 --workers 4 app:app
+# 4. Consider using nginx as reverse proxy
+# 5. Set appropriate security headers and HTTPS

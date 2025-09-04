@@ -21,6 +21,7 @@ dependencies:
   - coverage
   - black
   - flake8
+  - bs4
   
   # Optional: for development server improvements
   - python-dotenv

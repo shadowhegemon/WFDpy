@@ -27,6 +27,9 @@
                     <a class="nav-link {% if request.endpoint == 'stats' %}active{% endif %}" href="{{ url_for('stats') }}">Statistics</a>
                     <a class="nav-link {% if request.endpoint == 'map_view' %}active{% endif %}" href="{{ url_for('map_view') }}">Map</a>
                     <a class="nav-link {% if request.endpoint in ['station_setup', 'new_station_setup', 'edit_station_setup'] %}active{% endif %}" href="{{ url_for('station_setup') }}">Station Setup</a>
+                    <a class="nav-link {% if request.endpoint == 'duplicate_settings' %}active{% endif %}" href="{{ url_for('duplicate_settings') }}">
+                        <i class="bi bi-shield-check"></i> Duplicate Settings
+                    </a>
                     <a class="nav-link {% if request.endpoint == 'objectives' %}active{% endif %}" href="{{ url_for('objectives') }}">Objectives</a>
                     <a class="nav-link {% if request.endpoint == 'wfd_rules' %}active{% endif %}" href="{{ url_for('wfd_rules') }}">WFD Rules</a>
                 </div>

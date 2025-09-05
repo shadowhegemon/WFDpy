@@ -1414,3 +1414,59 @@ body {
   background-color: rgba(255, 255, 255, 0.1) !important;
   border-color: rgba(255, 255, 255, 0.3) !important;
 }
+/* Enhanced Duplicate Detection Styles */
+.exact-duplicate-alert {
+    border-left: 4px solid #dc3545 !important;
+    animation: pulseAlert 2s infinite;
+}
+
+.possible-dupe-alert {
+    border-left: 4px solid #fd7e14 !important;
+}
+
+.band-repeat-alert {
+    border-left: 4px solid #ffc107 !important;
+}
+
+.multi-band-alert {
+    border-left: 4px solid #0dcaf0 !important;
+}
+
+.close-frequency-alert {
+    border-left: 4px solid #6f42c1 !important;
+}
+
+.band-change-alert {
+    border-left: 4px solid #198754 !important;
+}
+
+@keyframes pulseAlert {
+    0%, 100% { 
+        box-shadow: 0 0 5px rgba(220, 53, 69, 0.3);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 20px rgba(220, 53, 69, 0.6);
+        transform: scale(1.02);
+    }
+}
+
+/* Duplicate Settings Page */
+.form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+.badge.bg-info {
+    background-color: #0dcaf0 !important;
+    color: #000 !important;
+}

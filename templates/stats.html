@@ -361,7 +361,26 @@
 {% block extra_js %}
 <script>
 // Chart.js configuration for dark mode compatibility
-Chart.defaults.color = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333';
+const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' || 
+                   document.documentElement.classList.contains('dark') ||
+                   document.body.getAttribute('data-bs-theme') === 'dark' ||
+                   window.getComputedStyle(document.body).backgroundColor.includes('rgb(33, 37, 41)') ||
+                   window.getComputedStyle(document.documentElement).getPropertyValue('color-scheme').includes('dark');
+
+// Set comprehensive Chart.js defaults for theme compatibility
+Chart.defaults.color = isDarkTheme ? '#ffffff' : '#333333';
+Chart.defaults.scale.grid.color = isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+Chart.defaults.scale.ticks.color = isDarkTheme ? '#ffffff' : '#333333';
+Chart.defaults.plugins.legend.labels.color = isDarkTheme ? '#ffffff' : '#333333';
+Chart.defaults.plugins.tooltip.titleColor = isDarkTheme ? '#ffffff' : '#333333';
+Chart.defaults.plugins.tooltip.bodyColor = isDarkTheme ? '#ffffff' : '#333333';
+Chart.defaults.plugins.tooltip.backgroundColor = isDarkTheme ? 'rgba(33, 37, 41, 0.9)' : 'rgba(255, 255, 255, 0.9)';
+Chart.defaults.plugins.tooltip.borderColor = isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
+
+// Define theme-aware colors
+const textColor = isDarkTheme ? '#ffffff' : '#333333';
+const gridColor = isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+const borderColor = isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
 
 {% if total > 0 %}
 // Band Activity Chart
@@ -379,7 +398,7 @@ const bandChart = new Chart(document.getElementById('bandChart'), {
                 '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', 
                 '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
             ],
-            borderColor: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#333' : '#fff',
+            borderColor: borderColor,
             borderWidth: 2
         }]
     },
@@ -390,7 +409,7 @@ const bandChart = new Chart(document.getElementById('bandChart'), {
             legend: {
                 position: 'bottom',
                 labels: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 }
             }
         }
@@ -436,7 +455,7 @@ const modeByBandChart = new Chart(document.getElementById('modeByBandChart'), {
             x: {
                 stacked: true,
                 ticks: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 },
                 grid: {
                     color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
@@ -445,7 +464,7 @@ const modeByBandChart = new Chart(document.getElementById('modeByBandChart'), {
             y: {
                 stacked: true,
                 ticks: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 },
                 grid: {
                     color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
@@ -455,7 +474,7 @@ const modeByBandChart = new Chart(document.getElementById('modeByBandChart'), {
         plugins: {
             legend: {
                 labels: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 }
             }
         }
@@ -486,7 +505,7 @@ const hourlyChart = new Chart(document.getElementById('hourlyChart'), {
         scales: {
             x: {
                 ticks: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 },
                 grid: {
                     color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
@@ -495,7 +514,7 @@ const hourlyChart = new Chart(document.getElementById('hourlyChart'), {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 },
                 grid: {
                     color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
@@ -505,7 +524,7 @@ const hourlyChart = new Chart(document.getElementById('hourlyChart'), {
         plugins: {
             legend: {
                 labels: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 }
             }
         }
@@ -536,7 +555,7 @@ const cumulativeChart = new Chart(document.getElementById('cumulativeChart'), {
         scales: {
             x: {
                 ticks: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333',
+                    color: textColor,
                     maxTicksLimit: 10
                 },
                 grid: {
@@ -546,7 +565,7 @@ const cumulativeChart = new Chart(document.getElementById('cumulativeChart'), {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 },
                 grid: {
                     color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
@@ -556,7 +575,7 @@ const cumulativeChart = new Chart(document.getElementById('cumulativeChart'), {
         plugins: {
             legend: {
                 labels: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 }
             }
         }
@@ -584,7 +603,7 @@ const modeHourlyChart = new Chart(document.getElementById('modeHourlyChart'), {
         scales: {
             x: {
                 ticks: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 },
                 grid: {
                     color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
@@ -593,7 +612,7 @@ const modeHourlyChart = new Chart(document.getElementById('modeHourlyChart'), {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 },
                 grid: {
                     color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444444' : '#e0e0e0'
@@ -603,7 +622,7 @@ const modeHourlyChart = new Chart(document.getElementById('modeHourlyChart'), {
         plugins: {
             legend: {
                 labels: {
-                    color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#333333'
+                    color: textColor
                 }
             }
         }

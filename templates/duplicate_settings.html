@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% block title %}Duplicate Detection Settings - WFD Logger{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">
+                        <i class="bi bi-shield-check"></i> Duplicate Contact Detection Settings
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">
+                        Configure how the application detects and warns about potential duplicate contacts.
+                        These settings are designed to balance accuracy with contest-specific rules.
+                    </p>
+                    
+                    <form method="POST" class="needs-validation" novalidate>
+                        <!-- Time Thresholds -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="bi bi-clock"></i> Time Thresholds (Minutes)
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="exact_duplicate_threshold" class="form-label">
+                                        Exact Duplicate <small class="text-muted">(same band/mode)</small>
+                                    </label>
+                                    <input type="number" class="form-control" id="exact_duplicate_threshold" 
+                                           name="exact_duplicate_threshold" 
+                                           value="{{ settings.exact_duplicate_threshold }}" 
+                                           min="1" max="1440" required>
+                                    <div class="form-text">Time window for exact duplicate detection</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="same_band_duplicate_threshold" class="form-label">
+                                        Same Band Warning <small class="text-muted">(different mode)</small>
+                                    </label>
+                                    <input type="number" class="form-control" id="same_band_duplicate_threshold" 
+                                           name="same_band_duplicate_threshold" 
+                                           value="{{ settings.same_band_duplicate_threshold }}" 
+                                           min="1" max="10080" required>
+                                    <div class="form-text">Time window for same-band warnings</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="different_band_duplicate_threshold" class="form-label">
+                                        Multi-Band Tracking <small class="text-muted">(different bands)</small>
+                                    </label>
+                                    <input type="number" class="form-control" id="different_band_duplicate_threshold" 
+                                           name="different_band_duplicate_threshold" 
+                                           value="{{ settings.different_band_duplicate_threshold }}" 
+                                           min="1" max="10080" required>
+                                    <div class="form-text">Time window for multi-band tracking</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <!-- Warning Enable/Disable -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="bi bi-toggles"></i> Warning Types
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="enable_exact_duplicate_warnings" 
+                                           name="enable_exact_duplicate_warnings" 
+                                           {{ 'checked' if settings.enable_exact_duplicate_warnings }}>
+                                    <label class="form-check-label" for="enable_exact_duplicate_warnings">
+                                        <strong>Exact Duplicate Warnings</strong>
+                                        <br><small class="text-muted">Same callsign, band, and mode within threshold</small>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="enable_same_band_warnings" 
+                                           name="enable_same_band_warnings" 
+                                           {{ 'checked' if settings.enable_same_band_warnings }}>
+                                    <label class="form-check-label" for="enable_same_band_warnings">
+                                        <strong>Same Band Warnings</strong>
+                                        <br><small class="text-muted">Same callsign and band, different mode</small>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="enable_different_band_warnings" 
+                                           name="enable_different_band_warnings" 
+                                           {{ 'checked' if settings.enable_different_band_warnings }}>
+                                    <label class="form-check-label" for="enable_different_band_warnings">
+                                        <strong>Multi-Band Warnings</strong>
+                                        <br><small class="text-muted">Same callsign on different bands</small>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="enable_same_mode_warnings" 
+                                           name="enable_same_mode_warnings" 
+                                           {{ 'checked' if settings.enable_same_mode_warnings }}>
+                                    <label class="form-check-label" for="enable_same_mode_warnings">
+                                        <strong>Same Mode Detection</strong>
+                                        <br><small class="text-muted">Enable mode-specific duplicate checking</small>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="enable_different_mode_warnings" 
+                                           name="enable_different_mode_warnings" 
+                                           {{ 'checked' if settings.enable_different_mode_warnings }}>
+                                    <label class="form-check-label" for="enable_different_mode_warnings">
+                                        <strong>Cross-Mode Warnings</strong>
+                                        <br><small class="text-muted">Warn when mode differs from previous contact</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <!-- WFD-Specific Rules -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="bi bi-snow2"></i> Winter Field Day Rules
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="allow_mode_mixups" 
+                                           name="allow_mode_mixups" 
+                                           {{ 'checked' if settings.allow_mode_mixups }}>
+                                    <label class="form-check-label" for="allow_mode_mixups">
+                                        <strong>Allow Mode Changes</strong>
+                                        <br><small class="text-muted">Same station on different modes is OK</small>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="allow_band_changes" 
+                                           name="allow_band_changes" 
+                                           {{ 'checked' if settings.allow_band_changes }}>
+                                    <label class="form-check-label" for="allow_band_changes">
+                                        <strong>Allow Band Changes</strong>
+                                        <br><small class="text-muted">Same station on different bands is OK</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <!-- Severity Levels and Frequency Tolerance -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h5 class="text-primary mb-3">
+                                    <i class="bi bi-exclamation-triangle"></i> Warning Severity Levels
+                                </h5>
+                                
+                                <div class="mb-3">
+                                    <label for="exact_duplicate_severity" class="form-label">Exact Duplicate Severity</label>
+                                    <select class="form-select" id="exact_duplicate_severity" name="exact_duplicate_severity">
+                                        <option value="danger" {{ 'selected' if settings.exact_duplicate_severity == 'danger' }}>Danger (Red)</option>
+                                        <option value="warning" {{ 'selected' if settings.exact_duplicate_severity == 'warning' }}>Warning (Yellow)</option>
+                                        <option value="info" {{ 'selected' if settings.exact_duplicate_severity == 'info' }}>Info (Blue)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="band_duplicate_severity" class="form-label">Band Duplicate Severity</label>
+                                    <select class="form-select" id="band_duplicate_severity" name="band_duplicate_severity">
+                                        <option value="danger" {{ 'selected' if settings.band_duplicate_severity == 'danger' }}>Danger (Red)</option>
+                                        <option value="warning" {{ 'selected' if settings.band_duplicate_severity == 'warning' }}>Warning (Yellow)</option>
+                                        <option value="info" {{ 'selected' if settings.band_duplicate_severity == 'info' }}>Info (Blue)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="mode_duplicate_severity" class="form-label">Mode Duplicate Severity</label>
+                                    <select class="form-select" id="mode_duplicate_severity" name="mode_duplicate_severity">
+                                        <option value="danger" {{ 'selected' if settings.mode_duplicate_severity == 'danger' }}>Danger (Red)</option>
+                                        <option value="warning" {{ 'selected' if settings.mode_duplicate_severity == 'warning' }}>Warning (Yellow)</option>
+                                        <option value="info" {{ 'selected' if settings.mode_duplicate_severity == 'info' }}>Info (Blue)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h5 class="text-primary mb-3">
+                                    <i class="bi bi-broadcast"></i> Frequency Settings
+                                </h5>
+                                
+                                <div class="mb-3">
+                                    <label for="frequency_tolerance" class="form-label">
+                                        Frequency Tolerance (kHz)
+                                    </label>
+                                    <input type="number" class="form-control" id="frequency_tolerance" 
+                                           name="frequency_tolerance" 
+                                           value="{{ settings.frequency_tolerance }}" 
+                                           min="1" max="500" step="0.1" required>
+                                    <div class="form-text">
+                                        Consider frequencies within this range as "close" for duplicate detection
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i>
+                                    <strong>Tips:</strong>
+                                    <ul class="mb-0 mt-2">
+                                        <li>Lower frequency tolerance = stricter detection</li>
+                                        <li>Higher thresholds = more warnings</li>
+                                        <li>Adjust based on your operating style</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ url_for('home') }}" class="btn btn-secondary">
+                                        <i class="bi bi-arrow-left"></i> Back to Home
+                                    </a>
+                                    
+                                    <div>
+                                        <button type="button" class="btn btn-warning me-2" onclick="resetDefaults()">
+                                            <i class="bi bi-arrow-counterclockwise"></i> Reset Defaults
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-check-lg"></i> Save Settings
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Current Settings Preview -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-eye"></i> Current Settings Summary
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Time Thresholds:</strong>
+                            <ul class="list-unstyled mt-2">
+                                <li>Exact: {{ settings.exact_duplicate_threshold }}m</li>
+                                <li>Same Band: {{ settings.same_band_duplicate_threshold }}m</li>
+                                <li>Multi-Band: {{ settings.different_band_duplicate_threshold }}m</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>WFD Rules:</strong>
+                            <ul class="list-unstyled mt-2">
+                                <li>Mode Changes: {{ '✓' if settings.allow_mode_mixups else '✗' }}</li>
+                                <li>Band Changes: {{ '✓' if settings.allow_band_changes else '✗' }}</li>
+                                <li>Freq Tolerance: {{ settings.frequency_tolerance }}kHz</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Warning Levels:</strong>
+                            <ul class="list-unstyled mt-2">
+                                <li>Exact: <span class="badge bg-{{ settings.exact_duplicate_severity }}">{{ settings.exact_duplicate_severity.title() }}</span></li>
+                                <li>Band: <span class="badge bg-{{ settings.band_duplicate_severity }}">{{ settings.band_duplicate_severity.title() }}</span></li>
+                                <li>Mode: <span class="badge bg-{{ settings.mode_duplicate_severity }}">{{ settings.mode_duplicate_severity.title() }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    {% if settings.updated_at %}
+                    <div class="text-muted mt-3">
+                        <small>Last updated: {{ settings.updated_at.strftime('%Y-%m-%d %H:%M UTC') }}</small>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function resetDefaults() {
+    if (confirm('Reset all settings to defaults? This will overwrite your current configuration.')) {
+        // Reset form to default values
+        document.getElementById('exact_duplicate_threshold').value = '10';
+        document.getElementById('same_band_duplicate_threshold').value = '60';
+        document.getElementById('different_band_duplicate_threshold').value = '1440';
+        
+        document.getElementById('enable_exact_duplicate_warnings').checked = true;
+        document.getElementById('enable_same_band_warnings').checked = true;
+        document.getElementById('enable_different_band_warnings').checked = false;
+        document.getElementById('enable_same_mode_warnings').checked = true;
+        document.getElementById('enable_different_mode_warnings').checked = false;
+        
+        document.getElementById('allow_mode_mixups').checked = true;
+        document.getElementById('allow_band_changes').checked = true;
+        
+        document.getElementById('exact_duplicate_severity').value = 'danger';
+        document.getElementById('band_duplicate_severity').value = 'warning';
+        document.getElementById('mode_duplicate_severity').value = 'info';
+        
+        document.getElementById('frequency_tolerance').value = '50.0';
+    }
+}
+
+// Bootstrap form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>
+{% endblock %}

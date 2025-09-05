@@ -248,15 +248,57 @@
         const warningDiv = document.getElementById('duplicate-warning');
         let html = '';
         
-        warnings.forEach(warning => {
-            html += `<div class="alert alert-${warning.type} alert-dismissible fade show">
-                <i class="bi bi-exclamation-triangle"></i> <strong>Duplicate Warning:</strong> ${warning.message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        // Get icon based on warning class
+        function getWarningIcon(warningClass) {
+            switch(warningClass) {
+                case 'exact-duplicate': return 'bi-x-circle-fill';
+                case 'possible-dupe': return 'bi-exclamation-triangle-fill';
+                case 'band-repeat': return 'bi-arrow-repeat';
+                case 'multi-band': return 'bi-broadcast';
+                case 'close-frequency': return 'bi-soundwave';
+                case 'band-change': return 'bi-arrow-left-right';
+                default: return 'bi-info-circle';
+            }
+        }
+        
+        // Sort warnings by severity for display
+        const severityOrder = { 'danger': 1, 'warning': 2, 'info': 3 };
+        const sortedWarnings = warnings.sort((a, b) => {
+            return severityOrder[a.type] - severityOrder[b.type];
+        });
+        
+        sortedWarnings.forEach(warning => {
+            const icon = getWarningIcon(warning.warning_class);
+            const timeInfo = warning.contact_time ? ` (${warning.contact_time})` : '';
+            
+            html += `<div class="alert alert-${warning.type} alert-dismissible fade show ${warning.warning_class}-alert">
+                <div class="d-flex align-items-start">
+                    <i class="bi ${icon} me-2 flex-shrink-0" style="font-size: 1.1rem;"></i>
+                    <div class="flex-grow-1">
+                        <strong>${warning.message}</strong>
+                        ${timeInfo}
+                        ${warning.contact_id ? `<br><small class="opacity-75">Contact ID: ${warning.contact_id}</small>` : ''}
+                    </div>
+                    <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="alert"></button>
+                </div>
             </div>`;
         });
         
         warningDiv.innerHTML = html;
         warningDiv.style.display = 'block';
+        
+        // Add some visual feedback based on highest severity
+        const highestSeverity = sortedWarnings[0]?.type;
+        if (highestSeverity === 'danger') {
+            // Flash the callsign field border red briefly
+            const callsignField = document.getElementById('callsign');
+            callsignField.style.borderColor = '#dc3545';
+            callsignField.style.boxShadow = '0 0 0 0.25rem rgba(220, 53, 69, 0.25)';
+            setTimeout(() => {
+                callsignField.style.borderColor = '';
+                callsignField.style.boxShadow = '';
+            }, 2000);
+        }
     }
     
     function hideDuplicateWarning() {

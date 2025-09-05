@@ -14,6 +14,46 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+class DuplicateSettings(db.Model):
+    """Model to store duplicate detection preferences"""
+    id = db.Column(db.Integer, primary_key=True)
+    
+    # Time-based duplicate thresholds (in minutes)
+    exact_duplicate_threshold = db.Column(db.Integer, default=10)
+    same_band_duplicate_threshold = db.Column(db.Integer, default=60)
+    different_band_duplicate_threshold = db.Column(db.Integer, default=1440)  # 24 hours
+    
+    # Warning settings
+    enable_exact_duplicate_warnings = db.Column(db.Boolean, default=True)
+    enable_same_band_warnings = db.Column(db.Boolean, default=True)
+    enable_different_band_warnings = db.Column(db.Boolean, default=False)
+    enable_same_mode_warnings = db.Column(db.Boolean, default=True)
+    enable_different_mode_warnings = db.Column(db.Boolean, default=False)
+    
+    # WFD-specific rules
+    allow_mode_mixups = db.Column(db.Boolean, default=True)  # Allow same station on different modes
+    allow_band_changes = db.Column(db.Boolean, default=True)  # Allow same station on different bands
+    
+    # Warning severity levels
+    exact_duplicate_severity = db.Column(db.String(20), default='danger')  # danger, warning, info
+    band_duplicate_severity = db.Column(db.String(20), default='warning')
+    mode_duplicate_severity = db.Column(db.String(20), default='info')
+    
+    # Frequency tolerance for "same band" detection (in kHz)
+    frequency_tolerance = db.Column(db.Float, default=50.0)
+    
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+def get_duplicate_settings():
+    """Get current duplicate detection settings, create defaults if none exist"""
+    settings = DuplicateSettings.query.first()
+    if not settings:
+        settings = DuplicateSettings()
+        db.session.add(settings)
+        db.session.commit()
+    return settings
+
 def get_valid_arrl_sections():
     """Get list of valid ARRL sections"""
     return [
@@ -418,64 +458,128 @@ def set_active_station(station_id):
     return False
 
 def check_duplicate_contact(callsign, frequency, mode):
-    """Check for potential duplicate contacts"""
-    # Look for existing contacts with same callsign on same band/mode within last 10 minutes
-    ten_minutes_ago = datetime.utcnow() - timedelta(minutes=10)
+    """Enhanced duplicate contact detection with configurable thresholds"""
+    settings = get_duplicate_settings()
+    current_time = datetime.utcnow()
     
-    # Extract band from frequency for comparison
-    try:
-        freq_float = float(frequency)
-        # Define band ranges (simplified)
-        if 1.8 <= freq_float <= 2.0:
-            band = '160m'
-        elif 3.5 <= freq_float <= 4.0:
-            band = '80m'
-        elif 7.0 <= freq_float <= 7.3:
-            band = '40m'
-        elif 14.0 <= freq_float <= 14.35:
-            band = '20m'
-        elif 21.0 <= freq_float <= 21.45:
-            band = '15m'
-        elif 28.0 <= freq_float <= 29.7:
-            band = '10m'
-        elif 50.0 <= freq_float <= 54.0:
-            band = '6m'
-        elif 144.0 <= freq_float <= 148.0:
-            band = '2m'
-        elif 420.0 <= freq_float <= 450.0:
-            band = '70cm'
-        else:
-            band = f"{freq_float}MHz"
-    except:
-        band = frequency
-    
-    # Check for exact callsign match (possible dupe)
-    exact_dupe = Contact.query.filter(
-        Contact.callsign.ilike(callsign),
-        Contact.datetime >= ten_minutes_ago
-    ).first()
-    
-    # Check for same callsign on same band (band/mode dupe)
-    band_dupe = None
+    # Get all existing contacts for this callsign
     existing_contacts = Contact.query.filter(
         Contact.callsign.ilike(callsign)
     ).all()
     
+    if not existing_contacts:
+        return {
+            'warnings': [],
+            'is_duplicate': False,
+            'severity': 'none',
+            'contact_count': 0
+        }
+    
+    warnings = []
+    max_severity = 'none'
+    severity_order = {'info': 1, 'warning': 2, 'danger': 3}
+    
+    current_band = get_band_from_frequency(frequency)
+    
     for contact in existing_contacts:
-        try:
-            existing_freq = float(contact.frequency)
-            existing_band = band  # Same logic as above - simplified for brevity
-            if existing_band == band and contact.mode.upper() == mode.upper():
-                band_dupe = contact
-                break
-        except:
-            continue
+        time_diff = (current_time - contact.datetime).total_seconds() / 60  # minutes
+        contact_band = get_band_from_frequency(contact.frequency)
+        
+        # Check for exact duplicates (same band, mode, recent time)
+        if (contact_band == current_band and 
+            contact.mode.upper() == mode.upper() and 
+            time_diff <= settings.exact_duplicate_threshold and
+            settings.enable_exact_duplicate_warnings):
+            
+            warnings.append({
+                'type': settings.exact_duplicate_severity,
+                'message': f'EXACT DUPLICATE: {callsign} already worked on {contact_band} {contact.mode} {int(time_diff)} minutes ago',
+                'contact_time': contact.datetime.strftime('%H:%MZ'),
+                'contact_id': contact.id,
+                'warning_class': 'exact-duplicate'
+            })
+            if severity_order.get(settings.exact_duplicate_severity, 0) > severity_order.get(max_severity, 0):
+                max_severity = settings.exact_duplicate_severity
+        
+        # Check for same band, different mode
+        elif (contact_band == current_band and 
+              contact.mode.upper() != mode.upper() and 
+              time_diff <= settings.same_band_duplicate_threshold and
+              settings.enable_same_mode_warnings):
+            
+            if settings.allow_mode_mixups:
+                warnings.append({
+                    'type': settings.mode_duplicate_severity,
+                    'message': f'BAND REPEAT: {callsign} worked {int(time_diff)} min ago on {contact_band} {contact.mode} (different mode OK)',
+                    'contact_time': contact.datetime.strftime('%H:%MZ'),
+                    'contact_id': contact.id,
+                    'warning_class': 'band-repeat'
+                })
+            else:
+                warnings.append({
+                    'type': settings.band_duplicate_severity,
+                    'message': f'POSSIBLE DUPE: {callsign} worked {int(time_diff)} min ago on {contact_band} {contact.mode}',
+                    'contact_time': contact.datetime.strftime('%H:%MZ'),
+                    'contact_id': contact.id,
+                    'warning_class': 'possible-dupe'
+                })
+            
+            if severity_order.get(settings.mode_duplicate_severity, 0) > severity_order.get(max_severity, 0):
+                max_severity = settings.mode_duplicate_severity
+        
+        # Check for same callsign, different band
+        elif (contact_band != current_band and 
+              time_diff <= settings.different_band_duplicate_threshold and
+              settings.enable_different_band_warnings):
+            
+            if settings.allow_band_changes:
+                warnings.append({
+                    'type': 'info',
+                    'message': f'MULTI-BAND: {callsign} worked {int(time_diff)} min ago on {contact_band} {contact.mode} (band change OK)',
+                    'contact_time': contact.datetime.strftime('%H:%MZ'),
+                    'contact_id': contact.id,
+                    'warning_class': 'multi-band'
+                })
+            else:
+                warnings.append({
+                    'type': settings.band_duplicate_severity,
+                    'message': f'BAND CHANGE: {callsign} worked {int(time_diff)} min ago on {contact_band} {contact.mode}',
+                    'contact_time': contact.datetime.strftime('%H:%MZ'),
+                    'contact_id': contact.id,
+                    'warning_class': 'band-change'
+                })
+            
+            if severity_order.get('info', 0) > severity_order.get(max_severity, 0):
+                max_severity = 'info'
+        
+        # Check for frequency-close duplicates (within tolerance)
+        elif contact_band == current_band:
+            try:
+                freq_diff = abs(float(frequency) - float(contact.frequency)) * 1000  # kHz
+                if (freq_diff <= settings.frequency_tolerance and
+                    contact.mode.upper() == mode.upper() and
+                    time_diff <= settings.same_band_duplicate_threshold):
+                    
+                    warnings.append({
+                        'type': 'warning',
+                        'message': f'CLOSE FREQUENCY: {callsign} worked {int(time_diff)} min ago on {contact.frequency} MHz (±{freq_diff:.1f} kHz)',
+                        'contact_time': contact.datetime.strftime('%H:%MZ'),
+                        'contact_id': contact.id,
+                        'warning_class': 'close-frequency'
+                    })
+                    if severity_order.get('warning', 0) > severity_order.get(max_severity, 0):
+                        max_severity = 'warning'
+            except:
+                pass
+    
+    # Sort warnings by severity (danger first, then warning, then info)
+    warnings.sort(key=lambda x: severity_order.get(x['type'], 0), reverse=True)
     
     return {
-        'exact_dupe': exact_dupe,
-        'band_dupe': band_dupe,
-        'is_duplicate': exact_dupe is not None,
-        'is_band_duplicate': band_dupe is not None
+        'warnings': warnings,
+        'is_duplicate': max_severity in ['danger', 'warning'],
+        'severity': max_severity,
+        'contact_count': len(existing_contacts)
     }
 
 def get_band_from_frequency(frequency):
@@ -629,8 +733,9 @@ def get_mode_statistics():
                 # Count contacts per mode
                 mode_counts[mode] = mode_counts.get(mode, 0) + 1
                 
-                # Calculate points per mode (CW/Digital = 2, Voice = 1)
-                points = 2 if mode in ['CW', 'RTTY', 'PSK31', 'FT8', 'FT4', 'JS8', 'MSK144'] else 1
+                # Calculate points per mode (Voice = 1, All others = 2)
+                # Per WFD rules: Only FM and SSB are voice modes (1 point), everything else is CW/Digital (2 points)
+                points = 1 if mode in ['FM', 'SSB'] else 2
                 mode_points[mode] = mode_points.get(mode, 0) + points
                 
                 # Track hourly activity per mode
@@ -662,10 +767,12 @@ def calculate_wfd_score():
     # Calculate contact points
     contact_points = 0
     for contact in contacts:
-        if contact.mode.upper() in ['CW', 'RTTY', 'PSK', 'FT8', 'FT4', 'JS8', 'MSK144', 'DATA']:
-            contact_points += 2  # CW/Digital = 2 points
+        mode = contact.mode.upper() if contact.mode else 'UNKNOWN'
+        # Per WFD rules: Only FM and SSB are voice modes (1 point), everything else is CW/Digital (2 points)
+        if mode in ['FM', 'SSB']:
+            contact_points += 1  # Voice = 1 point
         else:
-            contact_points += 1  # Phone = 1 point
+            contact_points += 2  # CW/Digital = 2 points (includes CW, RTTY, FT8, FT4, JS8, MSK144, DIGITAL, etc.)
     
     # Calculate multipliers (unique sections/countries worked)
     unique_sections = set()
@@ -1123,9 +1230,51 @@ def delete_station_setup(setup_id):
 def wfd_rules():
     return render_template('rules.html')
 
+@app.route('/duplicate_settings', methods=['GET', 'POST'])
+def duplicate_settings():
+    """Manage duplicate detection settings"""
+    settings = get_duplicate_settings()
+    
+    if request.method == 'POST':
+        try:
+            # Update time thresholds
+            settings.exact_duplicate_threshold = int(request.form.get('exact_duplicate_threshold', 10))
+            settings.same_band_duplicate_threshold = int(request.form.get('same_band_duplicate_threshold', 60))
+            settings.different_band_duplicate_threshold = int(request.form.get('different_band_duplicate_threshold', 1440))
+            
+            # Update warning enables
+            settings.enable_exact_duplicate_warnings = 'enable_exact_duplicate_warnings' in request.form
+            settings.enable_same_band_warnings = 'enable_same_band_warnings' in request.form
+            settings.enable_different_band_warnings = 'enable_different_band_warnings' in request.form
+            settings.enable_same_mode_warnings = 'enable_same_mode_warnings' in request.form
+            settings.enable_different_mode_warnings = 'enable_different_mode_warnings' in request.form
+            
+            # Update WFD-specific settings
+            settings.allow_mode_mixups = 'allow_mode_mixups' in request.form
+            settings.allow_band_changes = 'allow_band_changes' in request.form
+            
+            # Update severity levels
+            settings.exact_duplicate_severity = request.form.get('exact_duplicate_severity', 'danger')
+            settings.band_duplicate_severity = request.form.get('band_duplicate_severity', 'warning')
+            settings.mode_duplicate_severity = request.form.get('mode_duplicate_severity', 'info')
+            
+            # Update frequency tolerance
+            settings.frequency_tolerance = float(request.form.get('frequency_tolerance', 50.0))
+            
+            settings.updated_at = datetime.utcnow()
+            db.session.commit()
+            
+            flash('Duplicate detection settings updated successfully!', 'success')
+            
+        except Exception as e:
+            flash(f'Error updating settings: {str(e)}', 'error')
+            db.session.rollback()
+    
+    return render_template('duplicate_settings.html', settings=settings)
+
 @app.route('/check_duplicate')
 def check_duplicate():
-    """API endpoint to check for duplicate contacts"""
+    """Enhanced API endpoint to check for duplicate contacts"""
     callsign = request.args.get('callsign', '').upper()
     frequency = request.args.get('frequency', '')
     mode = request.args.get('mode', '')
@@ -1135,25 +1284,12 @@ def check_duplicate():
     
     dupe_check = check_duplicate_contact(callsign, frequency, mode)
     
-    response_data = {
+    return jsonify({
         'is_duplicate': dupe_check['is_duplicate'],
-        'is_band_duplicate': dupe_check['is_band_duplicate'],
-        'warnings': []
-    }
-    
-    if dupe_check['exact_dupe']:
-        response_data['warnings'].append({
-            'type': 'danger',
-            'message': f"Possible duplicate: {callsign} worked recently at {dupe_check['exact_dupe'].datetime.strftime('%H:%M UTC')}"
-        })
-    
-    if dupe_check['band_dupe'] and not dupe_check['exact_dupe']:
-        response_data['warnings'].append({
-            'type': 'warning', 
-            'message': f"Already worked {callsign} on this band/mode at {dupe_check['band_dupe'].datetime.strftime('%H:%M UTC')}"
-        })
-    
-    return jsonify(response_data)
+        'severity': dupe_check['severity'],
+        'warnings': dupe_check['warnings'],
+        'contact_count': dupe_check['contact_count']
+    })
 
 
 @app.route('/objectives', methods=['GET', 'POST'])

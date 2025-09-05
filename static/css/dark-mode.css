@@ -28,8 +28,66 @@
   --bs-alert-danger-color: #842029;
 }
 
-/* Auburn-themed dark mode colors */
+/* Default Dark Theme */
 [data-bs-theme="dark"] {
+  --bs-body-bg: #1a1a1a;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #2d2d2d;
+  --bs-card-border-color: rgba(255,255,255,.125);
+  --bs-navbar-bg: #1a365d;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
+  --bs-border-color: #495057;
+  --bs-secondary-bg: #343a40;
+  --bs-tertiary-bg: #2d2d2d;
+  --bs-form-control-bg: #2d2d2d;
+  --bs-form-control-border: #495057;
+  --bs-alert-info-bg: #055160;
+  --bs-alert-info-border: #086b7a;
+  --bs-alert-info-color: #9eeaf9;
+  --bs-alert-warning-bg: #664d03;
+  --bs-alert-warning-border: #7a5c08;
+  --bs-alert-warning-color: #ffecb5;
+  --bs-alert-success-bg: #0f5132;
+  --bs-alert-success-border: #134e3a;
+  --bs-alert-success-color: #badbcc;
+  --bs-alert-danger-bg: #842029;
+  --bs-alert-danger-border: #9a2834;
+  --bs-alert-danger-color: #f5c2c7;
+}
+
+/* Auburn Theme - Light Variant */
+[data-bs-theme="auburn-light"] {
+  --bs-body-bg: #F5F5F5;
+  --bs-body-color: #0C2340;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #DD550C;
+  --bs-navbar-bg: #DD550C;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(12, 35, 64, 0.05);
+  --bs-table-hover-bg: rgba(12, 35, 64, 0.1);
+  --bs-border-color: #0C2340;
+  --bs-secondary-bg: #E8F4F8;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #0C2340;
+  --bs-alert-info-bg: #E8F4F8;
+  --bs-alert-info-border: #0C2340;
+  --bs-alert-info-color: #0C2340;
+  --bs-alert-warning-bg: #FFF3E0;
+  --bs-alert-warning-border: #DD550C;
+  --bs-alert-warning-color: #8B3A00;
+  --bs-alert-success-bg: #E8F5E8;
+  --bs-alert-success-border: #28A745;
+  --bs-alert-success-color: #155724;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #DC3545;
+  --bs-alert-danger-color: #721C24;
+}
+
+/* Auburn Theme - Dark Variant */
+[data-bs-theme="auburn"] {
   /* Auburn Navy Blue (#0C2340) as primary background */
   --bs-body-bg: #0C2340;
   --bs-body-color: #ffffff;
@@ -72,6 +130,760 @@
   
   --bs-alert-danger-bg: #8B0000;
   --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Alabama Crimson Tide Theme - Light Variant */
+[data-bs-theme="alabama-light"] {
+  --bs-body-bg: #FFF5F5;
+  --bs-body-color: #9E1B32;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #9E1B32;
+  --bs-navbar-bg: #9E1B32;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(158, 27, 50, 0.05);
+  --bs-table-hover-bg: rgba(158, 27, 50, 0.1);
+  --bs-border-color: #690E1F;
+  --bs-secondary-bg: #FFF5F5;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #690E1F;
+  --bs-alert-info-bg: #FFF5F5;
+  --bs-alert-info-border: #9E1B32;
+  --bs-alert-info-color: #9E1B32;
+  --bs-alert-warning-bg: #FFF3CD;
+  --bs-alert-warning-border: #FFECB5;
+  --bs-alert-warning-color: #664D03;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Alabama Crimson Tide Theme - Dark Variant */
+[data-bs-theme="alabama"] {
+  --bs-body-bg: #9E1B32;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #690E1F;
+  --bs-card-border-color: rgba(255, 255, 255, 0.3);
+  --bs-navbar-bg: #9E1B32;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.08);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.15);
+  --bs-border-color: #ffffff;
+  --bs-secondary-bg: #690E1F;
+  --bs-tertiary-bg: #7D1525;
+  --bs-form-control-bg: #690E1F;
+  --bs-form-control-border: #ffffff;
+  --bs-alert-info-bg: #690E1F;
+  --bs-alert-info-border: #ffffff;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #ffffff;
+  --bs-alert-warning-border: #9E1B32;
+  --bs-alert-warning-color: #9E1B32;
+  --bs-alert-success-bg: #7D1525;
+  --bs-alert-success-border: #ffffff;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Georgia Bulldogs Theme - Light Variant */
+[data-bs-theme="georgia-light"] {
+  --bs-body-bg: #FFF8F8;
+  --bs-body-color: #BA0C2F;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #000000;
+  --bs-navbar-bg: #BA0C2F;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(186, 12, 47, 0.05);
+  --bs-table-hover-bg: rgba(186, 12, 47, 0.1);
+  --bs-border-color: #000000;
+  --bs-secondary-bg: #FFF8F8;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #000000;
+  --bs-alert-info-bg: #FFF8F8;
+  --bs-alert-info-border: #BA0C2F;
+  --bs-alert-info-color: #BA0C2F;
+  --bs-alert-warning-bg: #FFF3CD;
+  --bs-alert-warning-border: #FFECB5;
+  --bs-alert-warning-color: #664D03;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Georgia Bulldogs Theme - Dark Variant */
+[data-bs-theme="georgia"] {
+  --bs-body-bg: #BA0C2F;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #8B0A21;
+  --bs-card-border-color: rgba(0, 0, 0, 0.3);
+  --bs-navbar-bg: #BA0C2F;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(0, 0, 0, 0.08);
+  --bs-table-hover-bg: rgba(0, 0, 0, 0.15);
+  --bs-border-color: #000000;
+  --bs-secondary-bg: #8B0A21;
+  --bs-tertiary-bg: #A00B26;
+  --bs-form-control-bg: #8B0A21;
+  --bs-form-control-border: #000000;
+  --bs-alert-info-bg: #8B0A21;
+  --bs-alert-info-border: #000000;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #000000;
+  --bs-alert-warning-border: #BA0C2F;
+  --bs-alert-warning-color: #ffffff;
+  --bs-alert-success-bg: #A00B26;
+  --bs-alert-success-border: #000000;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* LSU Tigers Theme - Light Variant */
+[data-bs-theme="lsu-light"] {
+  --bs-body-bg: #FBF9FF;
+  --bs-body-color: #461D7C;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #FDD023;
+  --bs-navbar-bg: #461D7C;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(70, 29, 124, 0.05);
+  --bs-table-hover-bg: rgba(70, 29, 124, 0.1);
+  --bs-border-color: #FDD023;
+  --bs-secondary-bg: #FBF9FF;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #FDD023;
+  --bs-alert-info-bg: #FBF9FF;
+  --bs-alert-info-border: #461D7C;
+  --bs-alert-info-color: #461D7C;
+  --bs-alert-warning-bg: #FFFACD;
+  --bs-alert-warning-border: #FDD023;
+  --bs-alert-warning-color: #B8860B;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* LSU Tigers Theme - Dark Variant */
+[data-bs-theme="lsu"] {
+  --bs-body-bg: #461D7C;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #2F1353;
+  --bs-card-border-color: rgba(253, 208, 35, 0.3);
+  --bs-navbar-bg: #461D7C;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(253, 208, 35, 0.08);
+  --bs-table-hover-bg: rgba(253, 208, 35, 0.15);
+  --bs-border-color: #FDD023;
+  --bs-secondary-bg: #2F1353;
+  --bs-tertiary-bg: #3A1667;
+  --bs-form-control-bg: #2F1353;
+  --bs-form-control-border: #FDD023;
+  --bs-alert-info-bg: #2F1353;
+  --bs-alert-info-border: #FDD023;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #FDD023;
+  --bs-alert-warning-border: #461D7C;
+  --bs-alert-warning-color: #461D7C;
+  --bs-alert-success-bg: #3A1667;
+  --bs-alert-success-border: #FDD023;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Florida Gators Theme - Light Variant */
+[data-bs-theme="florida-light"] {
+  --bs-body-bg: #F0F8FF;
+  --bs-body-color: #0021A5;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #FF6600;
+  --bs-navbar-bg: #0021A5;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(0, 33, 165, 0.05);
+  --bs-table-hover-bg: rgba(0, 33, 165, 0.1);
+  --bs-border-color: #FF6600;
+  --bs-secondary-bg: #F0F8FF;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #FF6600;
+  --bs-alert-info-bg: #F0F8FF;
+  --bs-alert-info-border: #0021A5;
+  --bs-alert-info-color: #0021A5;
+  --bs-alert-warning-bg: #FFF3E0;
+  --bs-alert-warning-border: #FF6600;
+  --bs-alert-warning-color: #CC5200;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Florida Gators Theme - Dark Variant */
+[data-bs-theme="florida"] {
+  --bs-body-bg: #0021A5;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #001A85;
+  --bs-card-border-color: rgba(255, 102, 0, 0.3);
+  --bs-navbar-bg: #0021A5;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 102, 0, 0.08);
+  --bs-table-hover-bg: rgba(255, 102, 0, 0.15);
+  --bs-border-color: #FF6600;
+  --bs-secondary-bg: #001A85;
+  --bs-tertiary-bg: #001D95;
+  --bs-form-control-bg: #001A85;
+  --bs-form-control-border: #FF6600;
+  --bs-alert-info-bg: #001A85;
+  --bs-alert-info-border: #FF6600;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #FF6600;
+  --bs-alert-warning-border: #0021A5;
+  --bs-alert-warning-color: #ffffff;
+  --bs-alert-success-bg: #001D95;
+  --bs-alert-success-border: #FF6600;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Tennessee Volunteers Theme - Light Variant */
+[data-bs-theme="tennessee-light"] {
+  --bs-body-bg: #FFF8F0;
+  --bs-body-color: #FF8200;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #ffffff;
+  --bs-navbar-bg: #FF8200;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 130, 0, 0.05);
+  --bs-table-hover-bg: rgba(255, 130, 0, 0.1);
+  --bs-border-color: #CC6600;
+  --bs-secondary-bg: #FFF8F0;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #CC6600;
+  --bs-alert-info-bg: #FFF8F0;
+  --bs-alert-info-border: #FF8200;
+  --bs-alert-info-color: #FF8200;
+  --bs-alert-warning-bg: #FFF3E0;
+  --bs-alert-warning-border: #FF8200;
+  --bs-alert-warning-color: #CC6600;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Tennessee Volunteers Theme - Dark Variant */
+[data-bs-theme="tennessee"] {
+  --bs-body-bg: #FF8200;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #CC6600;
+  --bs-card-border-color: rgba(255, 255, 255, 0.3);
+  --bs-navbar-bg: #FF8200;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.08);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.15);
+  --bs-border-color: #ffffff;
+  --bs-secondary-bg: #CC6600;
+  --bs-tertiary-bg: #E67300;
+  --bs-form-control-bg: #CC6600;
+  --bs-form-control-border: #ffffff;
+  --bs-alert-info-bg: #CC6600;
+  --bs-alert-info-border: #ffffff;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #ffffff;
+  --bs-alert-warning-border: #FF8200;
+  --bs-alert-warning-color: #FF8200;
+  --bs-alert-success-bg: #E67300;
+  --bs-alert-success-border: #ffffff;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Texas A&M Aggies Theme - Light Variant */
+[data-bs-theme="tamu-light"] {
+  --bs-body-bg: #FFF5F5;
+  --bs-body-color: #500000;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: rgba(80, 0, 0, 0.3);
+  --bs-navbar-bg: #500000;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(80, 0, 0, 0.05);
+  --bs-table-hover-bg: rgba(80, 0, 0, 0.1);
+  --bs-border-color: #3A0000;
+  --bs-secondary-bg: #FFF5F5;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #3A0000;
+  --bs-alert-info-bg: #FFF5F5;
+  --bs-alert-info-border: #500000;
+  --bs-alert-info-color: #500000;
+  --bs-alert-warning-bg: #FFF3CD;
+  --bs-alert-warning-border: #FFECB5;
+  --bs-alert-warning-color: #664D03;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Texas A&M Aggies Theme - Dark Variant */
+[data-bs-theme="tamu"] {
+  --bs-body-bg: #500000;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #3A0000;
+  --bs-card-border-color: rgba(255, 255, 255, 0.3);
+  --bs-navbar-bg: #500000;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.08);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.15);
+  --bs-border-color: #ffffff;
+  --bs-secondary-bg: #3A0000;
+  --bs-tertiary-bg: #450000;
+  --bs-form-control-bg: #3A0000;
+  --bs-form-control-border: #ffffff;
+  --bs-alert-info-bg: #3A0000;
+  --bs-alert-info-border: #ffffff;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #ffffff;
+  --bs-alert-warning-border: #500000;
+  --bs-alert-warning-color: #500000;
+  --bs-alert-success-bg: #450000;
+  --bs-alert-success-border: #ffffff;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Army Theme - Light Variant */
+[data-bs-theme="army-light"] {
+  --bs-body-bg: #F8F9F0;
+  --bs-body-color: #4B5320;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #FFD700;
+  --bs-navbar-bg: #4B5320;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(75, 83, 32, 0.05);
+  --bs-table-hover-bg: rgba(75, 83, 32, 0.1);
+  --bs-border-color: #FFD700;
+  --bs-secondary-bg: #F8F9F0;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #FFD700;
+  --bs-alert-info-bg: #F8F9F0;
+  --bs-alert-info-border: #4B5320;
+  --bs-alert-info-color: #4B5320;
+  --bs-alert-warning-bg: #FFFACD;
+  --bs-alert-warning-border: #FFD700;
+  --bs-alert-warning-color: #B8860B;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Army Theme - Dark Variant */
+[data-bs-theme="army"] {
+  --bs-body-bg: #4B5320;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #3A4019;
+  --bs-card-border-color: rgba(255, 215, 0, 0.3);
+  --bs-navbar-bg: #4B5320;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 215, 0, 0.08);
+  --bs-table-hover-bg: rgba(255, 215, 0, 0.15);
+  --bs-border-color: #FFD700;
+  --bs-secondary-bg: #3A4019;
+  --bs-tertiary-bg: #42491C;
+  --bs-form-control-bg: #3A4019;
+  --bs-form-control-border: #FFD700;
+  --bs-alert-info-bg: #3A4019;
+  --bs-alert-info-border: #FFD700;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #FFD700;
+  --bs-alert-warning-border: #4B5320;
+  --bs-alert-warning-color: #4B5320;
+  --bs-alert-success-bg: #42491C;
+  --bs-alert-success-border: #FFD700;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Navy Theme - Light Variant */
+[data-bs-theme="navy-light"] {
+  --bs-body-bg: #F0F0FF;
+  --bs-body-color: #000080;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #FFD700;
+  --bs-navbar-bg: #000080;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(0, 0, 128, 0.05);
+  --bs-table-hover-bg: rgba(0, 0, 128, 0.1);
+  --bs-border-color: #FFD700;
+  --bs-secondary-bg: #F0F0FF;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #FFD700;
+  --bs-alert-info-bg: #F0F0FF;
+  --bs-alert-info-border: #000080;
+  --bs-alert-info-color: #000080;
+  --bs-alert-warning-bg: #FFFACD;
+  --bs-alert-warning-border: #FFD700;
+  --bs-alert-warning-color: #B8860B;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Navy Theme - Dark Variant */
+[data-bs-theme="navy"] {
+  --bs-body-bg: #000080;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #000066;
+  --bs-card-border-color: rgba(255, 215, 0, 0.3);
+  --bs-navbar-bg: #000080;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 215, 0, 0.08);
+  --bs-table-hover-bg: rgba(255, 215, 0, 0.15);
+  --bs-border-color: #FFD700;
+  --bs-secondary-bg: #000066;
+  --bs-tertiary-bg: #000073;
+  --bs-form-control-bg: #000066;
+  --bs-form-control-border: #FFD700;
+  --bs-alert-info-bg: #000066;
+  --bs-alert-info-border: #FFD700;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #FFD700;
+  --bs-alert-warning-border: #000080;
+  --bs-alert-warning-color: #000080;
+  --bs-alert-success-bg: #000073;
+  --bs-alert-success-border: #FFD700;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Air Force Theme - Light Variant */
+[data-bs-theme="airforce-light"] {
+  --bs-body-bg: #F0F8FF;
+  --bs-body-color: #004F98;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #FFD700;
+  --bs-navbar-bg: #004F98;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(0, 79, 152, 0.05);
+  --bs-table-hover-bg: rgba(0, 79, 152, 0.1);
+  --bs-border-color: #FFD700;
+  --bs-secondary-bg: #F0F8FF;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #FFD700;
+  --bs-alert-info-bg: #F0F8FF;
+  --bs-alert-info-border: #004F98;
+  --bs-alert-info-color: #004F98;
+  --bs-alert-warning-bg: #FFFACD;
+  --bs-alert-warning-border: #FFD700;
+  --bs-alert-warning-color: #B8860B;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Air Force Theme - Dark Variant */
+[data-bs-theme="airforce"] {
+  --bs-body-bg: #004F98;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #003A73;
+  --bs-card-border-color: rgba(255, 215, 0, 0.3);
+  --bs-navbar-bg: #004F98;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 215, 0, 0.08);
+  --bs-table-hover-bg: rgba(255, 215, 0, 0.15);
+  --bs-border-color: #FFD700;
+  --bs-secondary-bg: #003A73;
+  --bs-tertiary-bg: #004585;
+  --bs-form-control-bg: #003A73;
+  --bs-form-control-border: #FFD700;
+  --bs-alert-info-bg: #003A73;
+  --bs-alert-info-border: #FFD700;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #FFD700;
+  --bs-alert-warning-border: #004F98;
+  --bs-alert-warning-color: #004F98;
+  --bs-alert-success-bg: #004585;
+  --bs-alert-success-border: #FFD700;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Marines Theme - Light Variant */
+[data-bs-theme="marines-light"] {
+  --bs-body-bg: #FFF8F8;
+  --bs-body-color: #CC0000;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #FFD700;
+  --bs-navbar-bg: #CC0000;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(204, 0, 0, 0.05);
+  --bs-table-hover-bg: rgba(204, 0, 0, 0.1);
+  --bs-border-color: #FFD700;
+  --bs-secondary-bg: #FFF8F8;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #FFD700;
+  --bs-alert-info-bg: #FFF8F8;
+  --bs-alert-info-border: #CC0000;
+  --bs-alert-info-color: #CC0000;
+  --bs-alert-warning-bg: #FFFACD;
+  --bs-alert-warning-border: #FFD700;
+  --bs-alert-warning-color: #B8860B;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* Marines Theme - Dark Variant */
+[data-bs-theme="marines"] {
+  --bs-body-bg: #CC0000;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #990000;
+  --bs-card-border-color: rgba(255, 215, 0, 0.3);
+  --bs-navbar-bg: #CC0000;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 215, 0, 0.08);
+  --bs-table-hover-bg: rgba(255, 215, 0, 0.15);
+  --bs-border-color: #FFD700;
+  --bs-secondary-bg: #990000;
+  --bs-tertiary-bg: #B20000;
+  --bs-form-control-bg: #990000;
+  --bs-form-control-border: #FFD700;
+  --bs-alert-info-bg: #990000;
+  --bs-alert-info-border: #FFD700;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #FFD700;
+  --bs-alert-warning-border: #CC0000;
+  --bs-alert-warning-color: #CC0000;
+  --bs-alert-success-bg: #B20000;
+  --bs-alert-success-border: #FFD700;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Snow/Winter Theme - Light Variant */
+[data-bs-theme="winter-light"] {
+  --bs-body-bg: #F0F8FF;
+  --bs-body-color: #1B4B73;
+  --bs-card-bg: #E6F3FF;
+  --bs-card-border-color: #4A90E2;
+  --bs-navbar-bg: #87CEEB;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(74, 144, 226, 0.08);
+  --bs-table-hover-bg: rgba(74, 144, 226, 0.15);
+  --bs-border-color: #4A90E2;
+  --bs-secondary-bg: #E6F3FF;
+  --bs-tertiary-bg: #D9EFFF;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #4A90E2;
+  --bs-alert-info-bg: #E6F3FF;
+  --bs-alert-info-border: #4A90E2;
+  --bs-alert-info-color: #1B4B73;
+  --bs-alert-warning-bg: #FFF8DC;
+  --bs-alert-warning-border: #DAA520;
+  --bs-alert-warning-color: #8B4513;
+  --bs-alert-success-bg: #F0FFF0;
+  --bs-alert-success-border: #32CD32;
+  --bs-alert-success-color: #006400;
+  --bs-alert-danger-bg: #FFE4E1;
+  --bs-alert-danger-border: #DC143C;
+  --bs-alert-danger-color: #8B0000;
+}
+
+/* Snow/Winter Theme - Dark Variant */
+[data-bs-theme="winter-dark"] {
+  --bs-body-bg: #1B2951;
+  --bs-body-color: #E0F0FF;
+  --bs-card-bg: #243454;
+  --bs-card-border-color: rgba(224, 240, 255, 0.3);
+  --bs-navbar-bg: #1B2951;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(224, 240, 255, 0.08);
+  --bs-table-hover-bg: rgba(224, 240, 255, 0.15);
+  --bs-border-color: #87CEEB;
+  --bs-secondary-bg: #243454;
+  --bs-tertiary-bg: #2D3F57;
+  --bs-form-control-bg: #243454;
+  --bs-form-control-border: #87CEEB;
+  --bs-alert-info-bg: #243454;
+  --bs-alert-info-border: #87CEEB;
+  --bs-alert-info-color: #E0F0FF;
+  --bs-alert-warning-bg: #4682B4;
+  --bs-alert-warning-border: #87CEEB;
+  --bs-alert-warning-color: #ffffff;
+  --bs-alert-success-bg: #2D3F57;
+  --bs-alert-success-border: #87CEEB;
+  --bs-alert-success-color: #E0F0FF;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* USA Patriotic Theme - Light Variant */
+[data-bs-theme="patriotic-light"] {
+  --bs-body-bg: #F8F8FF;
+  --bs-body-color: #002868;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #DC3545;
+  --bs-navbar-bg: #002868;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(0, 40, 104, 0.05);
+  --bs-table-hover-bg: rgba(0, 40, 104, 0.1);
+  --bs-border-color: #DC3545;
+  --bs-secondary-bg: #F8F8FF;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #DC3545;
+  --bs-alert-info-bg: #F8F8FF;
+  --bs-alert-info-border: #002868;
+  --bs-alert-info-color: #002868;
+  --bs-alert-warning-bg: #FFF3CD;
+  --bs-alert-warning-border: #FFECB5;
+  --bs-alert-warning-color: #664D03;
+  --bs-alert-success-bg: #D1E7DD;
+  --bs-alert-success-border: #BADBCC;
+  --bs-alert-success-color: #0F5132;
+  --bs-alert-danger-bg: #F8D7DA;
+  --bs-alert-danger-border: #F5C2C7;
+  --bs-alert-danger-color: #842029;
+}
+
+/* USA Patriotic Theme - Dark Variant */
+[data-bs-theme="patriotic"] {
+  --bs-body-bg: #002868;
+  --bs-body-color: #ffffff;
+  --bs-card-bg: #001F4A;
+  --bs-card-border-color: rgba(220, 53, 69, 0.3);
+  --bs-navbar-bg: #002868;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(220, 53, 69, 0.08);
+  --bs-table-hover-bg: rgba(220, 53, 69, 0.15);
+  --bs-border-color: #DC3545;
+  --bs-secondary-bg: #001F4A;
+  --bs-tertiary-bg: #002356;
+  --bs-form-control-bg: #001F4A;
+  --bs-form-control-border: #DC3545;
+  --bs-alert-info-bg: #001F4A;
+  --bs-alert-info-border: #DC3545;
+  --bs-alert-info-color: #ffffff;
+  --bs-alert-warning-bg: #DC3545;
+  --bs-alert-warning-border: #002868;
+  --bs-alert-warning-color: #ffffff;
+  --bs-alert-success-bg: #002356;
+  --bs-alert-success-border: #DC3545;
+  --bs-alert-success-color: #ffffff;
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
+}
+
+/* Neon/Cyberpunk Theme - Light Variant */
+[data-bs-theme="neon-light"] {
+  --bs-body-bg: #F8F8FF;
+  --bs-body-color: #4B0082;
+  --bs-card-bg: #ffffff;
+  --bs-card-border-color: #FF00FF;
+  --bs-navbar-bg: #4B0082;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(75, 0, 130, 0.05);
+  --bs-table-hover-bg: rgba(75, 0, 130, 0.1);
+  --bs-border-color: #FF00FF;
+  --bs-secondary-bg: #F8F8FF;
+  --bs-tertiary-bg: #F5F5F5;
+  --bs-form-control-bg: #ffffff;
+  --bs-form-control-border: #FF00FF;
+  --bs-alert-info-bg: #E0FFFF;
+  --bs-alert-info-border: #00FFFF;
+  --bs-alert-info-color: #008B8B;
+  --bs-alert-warning-bg: #FFF0F5;
+  --bs-alert-warning-border: #FF00FF;
+  --bs-alert-warning-color: #8B008B;
+  --bs-alert-success-bg: #F0FFF0;
+  --bs-alert-success-border: #00FF00;
+  --bs-alert-success-color: #006400;
+  --bs-alert-danger-bg: #FFE4E1;
+  --bs-alert-danger-border: #FF1493;
+  --bs-alert-danger-color: #8B0000;
+}
+
+/* Neon/Cyberpunk Theme - Dark Variant */
+[data-bs-theme="neon"] {
+  --bs-body-bg: #0D1117;
+  --bs-body-color: #00FFFF;
+  --bs-card-bg: #161B22;
+  --bs-card-border-color: rgba(0, 255, 255, 0.3);
+  --bs-navbar-bg: #0D1117;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 0, 255, 0.08);
+  --bs-table-hover-bg: rgba(255, 0, 255, 0.15);
+  --bs-border-color: #FF00FF;
+  --bs-secondary-bg: #161B22;
+  --bs-tertiary-bg: #21262D;
+  --bs-form-control-bg: #161B22;
+  --bs-form-control-border: #FF00FF;
+  --bs-alert-info-bg: #161B22;
+  --bs-alert-info-border: #00FFFF;
+  --bs-alert-info-color: #00FFFF;
+  --bs-alert-warning-bg: #FF00FF;
+  --bs-alert-warning-border: #00FFFF;
+  --bs-alert-warning-color: #000000;
+  --bs-alert-success-bg: #21262D;
+  --bs-alert-success-border: #00FF00;
+  --bs-alert-success-color: #00FF00;
+  --bs-alert-danger-bg: #FF0000;
+  --bs-alert-danger-border: #FF00FF;
   --bs-alert-danger-color: #ffffff;
 }
 
@@ -240,28 +1052,250 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(221, 85, 12, 0.25) !important;
 }
 
-/* Auburn-themed button enhancements */
-[data-bs-theme="dark"] .btn-success {
-  background-color: #DD550C !important;
-  border-color: #DD550C !important;
+/* Universal button fixes for DARK THEMES ONLY - Secondary/Outline Buttons */
+[data-bs-theme="dark"] .btn-secondary,
+[data-bs-theme="dark"] .btn-outline-secondary,
+[data-bs-theme="auburn"] .btn-secondary,
+[data-bs-theme="auburn"] .btn-outline-secondary,
+[data-bs-theme="alabama"] .btn-secondary,
+[data-bs-theme="alabama"] .btn-outline-secondary,
+[data-bs-theme="georgia"] .btn-secondary,
+[data-bs-theme="georgia"] .btn-outline-secondary,
+[data-bs-theme="lsu"] .btn-secondary,
+[data-bs-theme="lsu"] .btn-outline-secondary,
+[data-bs-theme="florida"] .btn-secondary,
+[data-bs-theme="florida"] .btn-outline-secondary,
+[data-bs-theme="tennessee"] .btn-secondary,
+[data-bs-theme="tennessee"] .btn-outline-secondary,
+[data-bs-theme="tamu"] .btn-secondary,
+[data-bs-theme="tamu"] .btn-outline-secondary,
+[data-bs-theme="army"] .btn-secondary,
+[data-bs-theme="army"] .btn-outline-secondary,
+[data-bs-theme="navy"] .btn-secondary,
+[data-bs-theme="navy"] .btn-outline-secondary,
+[data-bs-theme="airforce"] .btn-secondary,
+[data-bs-theme="airforce"] .btn-outline-secondary,
+[data-bs-theme="marines"] .btn-secondary,
+[data-bs-theme="marines"] .btn-outline-secondary,
+[data-bs-theme="winter-dark"] .btn-secondary,
+[data-bs-theme="winter-dark"] .btn-outline-secondary,
+[data-bs-theme="patriotic"] .btn-secondary,
+[data-bs-theme="patriotic"] .btn-outline-secondary,
+[data-bs-theme="neon"] .btn-secondary,
+[data-bs-theme="neon"] .btn-outline-secondary {
+  background-color: var(--bs-secondary-bg) !important;
+  border-color: var(--bs-border-color) !important;
   color: #ffffff !important;
 }
 
-[data-bs-theme="dark"] .btn-success:hover {
-  background-color: #c44a0b !important;
-  border-color: #c44a0b !important;
+[data-bs-theme="dark"] .btn-secondary:hover,
+[data-bs-theme="dark"] .btn-outline-secondary:hover,
+[data-bs-theme="auburn"] .btn-secondary:hover,
+[data-bs-theme="auburn"] .btn-outline-secondary:hover,
+[data-bs-theme="alabama"] .btn-secondary:hover,
+[data-bs-theme="alabama"] .btn-outline-secondary:hover,
+[data-bs-theme="georgia"] .btn-secondary:hover,
+[data-bs-theme="georgia"] .btn-outline-secondary:hover,
+[data-bs-theme="lsu"] .btn-secondary:hover,
+[data-bs-theme="lsu"] .btn-outline-secondary:hover,
+[data-bs-theme="florida"] .btn-secondary:hover,
+[data-bs-theme="florida"] .btn-outline-secondary:hover,
+[data-bs-theme="tennessee"] .btn-secondary:hover,
+[data-bs-theme="tennessee"] .btn-outline-secondary:hover,
+[data-bs-theme="tamu"] .btn-secondary:hover,
+[data-bs-theme="tamu"] .btn-outline-secondary:hover,
+[data-bs-theme="army"] .btn-secondary:hover,
+[data-bs-theme="army"] .btn-outline-secondary:hover,
+[data-bs-theme="navy"] .btn-secondary:hover,
+[data-bs-theme="navy"] .btn-outline-secondary:hover,
+[data-bs-theme="airforce"] .btn-secondary:hover,
+[data-bs-theme="airforce"] .btn-outline-secondary:hover,
+[data-bs-theme="marines"] .btn-secondary:hover,
+[data-bs-theme="marines"] .btn-outline-secondary:hover,
+[data-bs-theme="winter-dark"] .btn-secondary:hover,
+[data-bs-theme="winter-dark"] .btn-outline-secondary:hover,
+[data-bs-theme="patriotic"] .btn-secondary:hover,
+[data-bs-theme="patriotic"] .btn-outline-secondary:hover,
+[data-bs-theme="neon"] .btn-secondary:hover,
+[data-bs-theme="neon"] .btn-outline-secondary:hover {
+  background-color: var(--bs-body-bg) !important;
+  filter: brightness(1.1);
   color: #ffffff !important;
 }
 
-[data-bs-theme="dark"] .btn-primary {
-  background-color: #1a3454 !important;
-  border-color: #DD550C !important;
+/* Catch-all button fix for any remaining button contrast issues in dark themes */
+[data-bs-theme="dark"] .btn,
+[data-bs-theme="auburn"] .btn,
+[data-bs-theme="alabama"] .btn,
+[data-bs-theme="georgia"] .btn,
+[data-bs-theme="lsu"] .btn,
+[data-bs-theme="florida"] .btn,
+[data-bs-theme="tennessee"] .btn,
+[data-bs-theme="tamu"] .btn,
+[data-bs-theme="army"] .btn,
+[data-bs-theme="navy"] .btn,
+[data-bs-theme="airforce"] .btn,
+[data-bs-theme="marines"] .btn,
+[data-bs-theme="winter-dark"] .btn,
+[data-bs-theme="patriotic"] .btn,
+[data-bs-theme="neon"] .btn {
+  color: #ffffff !important;
+  border: 2px solid var(--bs-border-color) !important;
+  background-color: var(--bs-secondary-bg) !important;
+}
+
+[data-bs-theme="dark"] .btn:hover,
+[data-bs-theme="auburn"] .btn:hover,
+[data-bs-theme="alabama"] .btn:hover,
+[data-bs-theme="georgia"] .btn:hover,
+[data-bs-theme="lsu"] .btn:hover,
+[data-bs-theme="florida"] .btn:hover,
+[data-bs-theme="tennessee"] .btn:hover,
+[data-bs-theme="tamu"] .btn:hover,
+[data-bs-theme="army"] .btn:hover,
+[data-bs-theme="navy"] .btn:hover,
+[data-bs-theme="airforce"] .btn:hover,
+[data-bs-theme="marines"] .btn:hover,
+[data-bs-theme="winter-dark"] .btn:hover,
+[data-bs-theme="patriotic"] .btn:hover,
+[data-bs-theme="neon"] .btn:hover {
+  color: #ffffff !important;
+  filter: brightness(1.2);
+}
+
+/* Success buttons */
+[data-bs-theme="dark"] .btn-success,
+[data-bs-theme="auburn"] .btn-success,
+[data-bs-theme="auburn-light"] .btn-success,
+[data-bs-theme="alabama"] .btn-success,
+[data-bs-theme="alabama-light"] .btn-success,
+[data-bs-theme="georgia"] .btn-success,
+[data-bs-theme="georgia-light"] .btn-success,
+[data-bs-theme="lsu"] .btn-success,
+[data-bs-theme="lsu-light"] .btn-success,
+[data-bs-theme="florida"] .btn-success,
+[data-bs-theme="florida-light"] .btn-success,
+[data-bs-theme="tennessee"] .btn-success,
+[data-bs-theme="tennessee-light"] .btn-success,
+[data-bs-theme="tamu"] .btn-success,
+[data-bs-theme="tamu-light"] .btn-success,
+[data-bs-theme="army"] .btn-success,
+[data-bs-theme="army-light"] .btn-success,
+[data-bs-theme="navy"] .btn-success,
+[data-bs-theme="navy-light"] .btn-success,
+[data-bs-theme="airforce"] .btn-success,
+[data-bs-theme="airforce-light"] .btn-success,
+[data-bs-theme="marines"] .btn-success,
+[data-bs-theme="marines-light"] .btn-success,
+[data-bs-theme="winter-light"] .btn-success,
+[data-bs-theme="winter-dark"] .btn-success,
+[data-bs-theme="patriotic"] .btn-success,
+[data-bs-theme="patriotic-light"] .btn-success,
+[data-bs-theme="neon"] .btn-success,
+[data-bs-theme="neon-light"] .btn-success {
+  background-color: var(--bs-border-color) !important;
+  border-color: var(--bs-border-color) !important;
   color: #ffffff !important;
 }
 
-[data-bs-theme="dark"] .btn-primary:hover {
-  background-color: #0C2340 !important;
-  border-color: #ff6b1a !important;
+[data-bs-theme="dark"] .btn-success:hover,
+[data-bs-theme="auburn"] .btn-success:hover,
+[data-bs-theme="auburn-light"] .btn-success:hover,
+[data-bs-theme="alabama"] .btn-success:hover,
+[data-bs-theme="alabama-light"] .btn-success:hover,
+[data-bs-theme="georgia"] .btn-success:hover,
+[data-bs-theme="georgia-light"] .btn-success:hover,
+[data-bs-theme="lsu"] .btn-success:hover,
+[data-bs-theme="lsu-light"] .btn-success:hover,
+[data-bs-theme="florida"] .btn-success:hover,
+[data-bs-theme="florida-light"] .btn-success:hover,
+[data-bs-theme="tennessee"] .btn-success:hover,
+[data-bs-theme="tennessee-light"] .btn-success:hover,
+[data-bs-theme="tamu"] .btn-success:hover,
+[data-bs-theme="tamu-light"] .btn-success:hover,
+[data-bs-theme="army"] .btn-success:hover,
+[data-bs-theme="army-light"] .btn-success:hover,
+[data-bs-theme="navy"] .btn-success:hover,
+[data-bs-theme="navy-light"] .btn-success:hover,
+[data-bs-theme="airforce"] .btn-success:hover,
+[data-bs-theme="airforce-light"] .btn-success:hover,
+[data-bs-theme="marines"] .btn-success:hover,
+[data-bs-theme="marines-light"] .btn-success:hover,
+[data-bs-theme="winter-light"] .btn-success:hover,
+[data-bs-theme="winter-dark"] .btn-success:hover,
+[data-bs-theme="patriotic"] .btn-success:hover,
+[data-bs-theme="patriotic-light"] .btn-success:hover,
+[data-bs-theme="neon"] .btn-success:hover,
+[data-bs-theme="neon-light"] .btn-success:hover {
+  filter: brightness(0.9);
+  color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .btn-primary,
+[data-bs-theme="auburn"] .btn-primary,
+[data-bs-theme="auburn-light"] .btn-primary,
+[data-bs-theme="alabama"] .btn-primary,
+[data-bs-theme="alabama-light"] .btn-primary,
+[data-bs-theme="georgia"] .btn-primary,
+[data-bs-theme="georgia-light"] .btn-primary,
+[data-bs-theme="lsu"] .btn-primary,
+[data-bs-theme="lsu-light"] .btn-primary,
+[data-bs-theme="florida"] .btn-primary,
+[data-bs-theme="florida-light"] .btn-primary,
+[data-bs-theme="tennessee"] .btn-primary,
+[data-bs-theme="tennessee-light"] .btn-primary,
+[data-bs-theme="tamu"] .btn-primary,
+[data-bs-theme="tamu-light"] .btn-primary,
+[data-bs-theme="army"] .btn-primary,
+[data-bs-theme="army-light"] .btn-primary,
+[data-bs-theme="navy"] .btn-primary,
+[data-bs-theme="navy-light"] .btn-primary,
+[data-bs-theme="airforce"] .btn-primary,
+[data-bs-theme="airforce-light"] .btn-primary,
+[data-bs-theme="marines"] .btn-primary,
+[data-bs-theme="marines-light"] .btn-primary,
+[data-bs-theme="winter-light"] .btn-primary,
+[data-bs-theme="winter-dark"] .btn-primary,
+[data-bs-theme="patriotic"] .btn-primary,
+[data-bs-theme="patriotic-light"] .btn-primary,
+[data-bs-theme="neon"] .btn-primary,
+[data-bs-theme="neon-light"] .btn-primary {
+  background-color: var(--bs-secondary-bg) !important;
+  border-color: var(--bs-border-color) !important;
+  color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .btn-primary:hover,
+[data-bs-theme="auburn"] .btn-primary:hover,
+[data-bs-theme="auburn-light"] .btn-primary:hover,
+[data-bs-theme="alabama"] .btn-primary:hover,
+[data-bs-theme="alabama-light"] .btn-primary:hover,
+[data-bs-theme="georgia"] .btn-primary:hover,
+[data-bs-theme="georgia-light"] .btn-primary:hover,
+[data-bs-theme="lsu"] .btn-primary:hover,
+[data-bs-theme="lsu-light"] .btn-primary:hover,
+[data-bs-theme="florida"] .btn-primary:hover,
+[data-bs-theme="florida-light"] .btn-primary:hover,
+[data-bs-theme="tennessee"] .btn-primary:hover,
+[data-bs-theme="tennessee-light"] .btn-primary:hover,
+[data-bs-theme="tamu"] .btn-primary:hover,
+[data-bs-theme="tamu-light"] .btn-primary:hover,
+[data-bs-theme="army"] .btn-primary:hover,
+[data-bs-theme="army-light"] .btn-primary:hover,
+[data-bs-theme="navy"] .btn-primary:hover,
+[data-bs-theme="navy-light"] .btn-primary:hover,
+[data-bs-theme="airforce"] .btn-primary:hover,
+[data-bs-theme="airforce-light"] .btn-primary:hover,
+[data-bs-theme="marines"] .btn-primary:hover,
+[data-bs-theme="marines-light"] .btn-primary:hover,
+[data-bs-theme="winter-light"] .btn-primary:hover,
+[data-bs-theme="winter-dark"] .btn-primary:hover,
+[data-bs-theme="patriotic"] .btn-primary:hover,
+[data-bs-theme="patriotic-light"] .btn-primary:hover,
+[data-bs-theme="neon"] .btn-primary:hover,
+[data-bs-theme="neon-light"] .btn-primary:hover {
+  background-color: var(--bs-body-bg) !important;
+  filter: brightness(1.1);
   color: #ffffff !important;
 }
 

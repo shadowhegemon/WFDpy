@@ -34,7 +34,7 @@ For more information about Winter Field Day, visit the official website: [https:
 - **Exchange Auto-population** - Automatic exchange generation from setup
 
 ### Advanced Features
-- **Dark Mode Support** - Toggle between light and dark themes with persistence
+- **Comprehensive Theme System** - 26 themes including school colors, military, and seasonal options
 - **Real-time Clock Display** - GMT and local time based on station's ARRL section timezone
 - **Timezone Auto-detection** - Automatic timezone mapping from ARRL sections with manual override
 - **Band Activity Charts** - Visual analytics with Chart.js
@@ -138,9 +138,15 @@ Configure your station information in the **Station Setup** page:
 - Supports all US/Canadian timezones including Alaska, Hawaii, and Atlantic zones
 - Updates every second for accurate timing during contest operations
 
-### Dark Mode
-- Toggle between light and dark themes using the button in the navigation
-- Theme preference is automatically saved and persists between sessions
+### Comprehensive Theme System
+- **26 Total Themes** - Extensive theme collection with light and dark variants
+- **Basic Themes** - Light and Dark modes
+- **School Colors** - Auburn, Alabama, Georgia, LSU, Florida, Tennessee, Texas A&M (light/dark variants)
+- **Military Themes** - Army, Navy, Air Force, Marines (light/dark variants) 
+- **Seasonal Themes** - Snow/Winter, USA Patriotic, Neon/Cyberpunk (light/dark variants)
+- **Hybrid System** - Each themed option available in both light and dark modes
+- **Persistent Preferences** - Theme selection automatically saved and restored
+- **Accessible Design** - High contrast buttons and readable text across all themes
 
 ## 📸 Screenshots
 

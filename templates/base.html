@@ -43,11 +43,52 @@
                         </div>
                     </div>
                     
-                    <!-- Dark mode toggle -->
-                    <button id="dark-mode-toggle" class="btn dark-mode-toggle navbar-text" type="button" title="Toggle dark mode">
-                        <i class="bi bi-sun theme-icon" id="theme-icon"></i>
-                        <span id="theme-text">Light</span>
-                    </button>
+                    <!-- Theme selector dropdown -->
+                    <div class="dropdown">
+                        <button class="btn dark-mode-toggle navbar-text dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Select theme">
+                            <i class="bi bi-palette theme-icon" id="theme-icon"></i>
+                            <span id="theme-text">Light</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="themeDropdown">
+                            <li><h6 class="dropdown-header">Basic Themes</h6></li>
+                            <li><a class="dropdown-item" href="#" data-theme="light"><i class="bi bi-sun"></i> Light</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="dark"><i class="bi bi-moon"></i> Dark</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">School Colors</h6></li>
+                            <li><a class="dropdown-item" href="#" data-theme="auburn-light"><i class="bi bi-sun" style="color: #DD550C;"></i> Auburn Tigers (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="auburn"><i class="bi bi-moon" style="color: #DD550C;"></i> Auburn Tigers (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="alabama-light"><i class="bi bi-sun text-danger"></i> Alabama Crimson Tide (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="alabama"><i class="bi bi-moon text-danger"></i> Alabama Crimson Tide (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="georgia-light"><i class="bi bi-sun text-danger"></i> Georgia Bulldogs (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="georgia"><i class="bi bi-moon text-danger"></i> Georgia Bulldogs (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="lsu-light"><i class="bi bi-sun" style="color: #461D7C;"></i> LSU Tigers (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="lsu"><i class="bi bi-moon" style="color: #461D7C;"></i> LSU Tigers (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="florida-light"><i class="bi bi-sun text-primary"></i> Florida Gators (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="florida"><i class="bi bi-moon text-primary"></i> Florida Gators (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="tennessee-light"><i class="bi bi-sun" style="color: #FF8200;"></i> Tennessee Volunteers (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="tennessee"><i class="bi bi-moon" style="color: #FF8200;"></i> Tennessee Volunteers (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="tamu-light"><i class="bi bi-sun" style="color: #500000;"></i> Texas A&M Aggies (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="tamu"><i class="bi bi-moon" style="color: #500000;"></i> Texas A&M Aggies (Dark)</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Military</h6></li>
+                            <li><a class="dropdown-item" href="#" data-theme="army-light"><i class="bi bi-sun" style="color: #4B5320;"></i> Army (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="army"><i class="bi bi-moon" style="color: #4B5320;"></i> Army (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="navy-light"><i class="bi bi-sun" style="color: #000080;"></i> Navy (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="navy"><i class="bi bi-moon" style="color: #000080;"></i> Navy (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="airforce-light"><i class="bi bi-sun" style="color: #004F98;"></i> Air Force (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="airforce"><i class="bi bi-moon" style="color: #004F98;"></i> Air Force (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="marines-light"><i class="bi bi-sun text-danger"></i> Marines (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="marines"><i class="bi bi-moon text-danger"></i> Marines (Dark)</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Seasonal</h6></li>
+                            <li><a class="dropdown-item" href="#" data-theme="winter-light"><i class="bi bi-sun" style="color: #4A90E2;"></i> Snow/Winter (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="winter-dark"><i class="bi bi-moon" style="color: #87CEEB;"></i> Snow/Winter (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="patriotic-light"><i class="bi bi-sun text-primary"></i> USA Patriotic (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="patriotic"><i class="bi bi-moon text-primary"></i> USA Patriotic (Dark)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="neon-light"><i class="bi bi-sun" style="color: #FF00FF;"></i> Neon/Cyberpunk (Light)</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="neon"><i class="bi bi-moon" style="color: #00FFFF;"></i> Neon/Cyberpunk (Dark)</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,40 +98,85 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Dark Mode JavaScript -->
+    <!-- Theme Switching JavaScript -->
     <script>
-        // Dark mode functionality
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        // Theme functionality
         const themeIcon = document.getElementById('theme-icon');
         const themeText = document.getElementById('theme-text');
         const htmlElement = document.documentElement;
+        
+        // Theme name mappings for display
+        const themeNames = {
+            'light': 'Light',
+            'dark': 'Dark',
+            'auburn-light': 'Auburn (Light)',
+            'auburn': 'Auburn (Dark)',
+            'alabama-light': 'Alabama (Light)',
+            'alabama': 'Alabama (Dark)',
+            'georgia-light': 'Georgia (Light)',
+            'georgia': 'Georgia (Dark)',
+            'lsu-light': 'LSU (Light)',
+            'lsu': 'LSU (Dark)',
+            'florida-light': 'Florida (Light)',
+            'florida': 'Florida (Dark)',
+            'tennessee-light': 'Tennessee (Light)',
+            'tennessee': 'Tennessee (Dark)',
+            'tamu-light': 'Texas A&M (Light)',
+            'tamu': 'Texas A&M (Dark)',
+            'army-light': 'Army (Light)',
+            'army': 'Army (Dark)',
+            'navy-light': 'Navy (Light)',
+            'navy': 'Navy (Dark)',
+            'airforce-light': 'Air Force (Light)',
+            'airforce': 'Air Force (Dark)',
+            'marines-light': 'Marines (Light)',
+            'marines': 'Marines (Dark)',
+            'winter-light': 'Winter (Light)',
+            'winter-dark': 'Winter (Dark)',
+            'patriotic-light': 'Patriotic (Light)',
+            'patriotic': 'Patriotic (Dark)',
+            'neon-light': 'Neon (Light)',
+            'neon': 'Neon (Dark)'
+        };
         
         // Check for saved theme preference or default to light mode
         const currentTheme = localStorage.getItem('theme') || 'light';
         
         // Apply the saved theme on page load
         function applyTheme(theme) {
-            if (theme === 'dark') {
-                htmlElement.setAttribute('data-bs-theme', 'dark');
-                themeIcon.className = 'bi bi-moon theme-icon';
-                themeText.textContent = 'Dark';
-            } else {
+            if (theme === 'light') {
                 htmlElement.removeAttribute('data-bs-theme');
                 themeIcon.className = 'bi bi-sun theme-icon';
-                themeText.textContent = 'Light';
+            } else {
+                htmlElement.setAttribute('data-bs-theme', theme);
+                // Use appropriate icon based on theme type
+                if (theme.includes('-light') || theme === 'light') {
+                    themeIcon.className = 'bi bi-sun theme-icon';
+                } else {
+                    themeIcon.className = 'bi bi-moon theme-icon';
+                }
             }
+            
+            // Update button text
+            themeText.textContent = themeNames[theme] || 'Custom Theme';
         }
         
         // Apply theme on page load
         applyTheme(currentTheme);
         
-        // Toggle theme when button is clicked
-        darkModeToggle.addEventListener('click', function() {
-            const currentTheme = htmlElement.getAttribute('data-bs-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        // Handle theme selection from dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeItems = document.querySelectorAll('.dropdown-item[data-theme]');
             
-            applyTheme(newTheme);
-            localStorage.setItem('theme', newTheme);
+            themeItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const selectedTheme = this.getAttribute('data-theme');
+                    
+                    applyTheme(selectedTheme);
+                    localStorage.setItem('theme', selectedTheme);
+                });
+            });
         });
         
         // Watch for system theme changes (optional enhancement)

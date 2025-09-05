@@ -1372,3 +1372,45 @@ body {
   background-color: var(--bs-secondary-bg) !important;
   border-color: var(--bs-card-border-color) !important;
 }
+
+/* Keyboard shortcut hints styling */
+.shortcut-hint {
+  opacity: 0.7;
+  font-size: 0.7rem !important;
+}
+
+.shortcut-hint kbd {
+  font-size: 0.6rem !important;
+  padding: 0.1rem 0.3rem !important;
+  background-color: var(--bs-secondary-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.25rem;
+  color: var(--bs-body-color);
+}
+
+/* Dark theme kbd styling */
+[data-bs-theme="dark"] .shortcut-hint kbd,
+[data-bs-theme="auburn"] .shortcut-hint kbd,
+[data-bs-theme="alabama"] .shortcut-hint kbd,
+[data-bs-theme="georgia"] .shortcut-hint kbd,
+[data-bs-theme="lsu"] .shortcut-hint kbd,
+[data-bs-theme="florida"] .shortcut-hint kbd,
+[data-bs-theme="tennessee"] .shortcut-hint kbd,
+[data-bs-theme="tamu"] .shortcut-hint kbd,
+[data-bs-theme="army"] .shortcut-hint kbd,
+[data-bs-theme="navy"] .shortcut-hint kbd,
+[data-bs-theme="airforce"] .shortcut-hint kbd,
+[data-bs-theme="marines"] .shortcut-hint kbd,
+[data-bs-theme="winter-dark"] .shortcut-hint kbd,
+[data-bs-theme="patriotic"] .shortcut-hint kbd,
+[data-bs-theme="neon"] .shortcut-hint kbd {
+  background-color: var(--bs-tertiary-bg);
+  border-color: var(--bs-border-color);
+  color: #ffffff;
+}
+
+/* Keyboard shortcuts help button styling */
+.btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}

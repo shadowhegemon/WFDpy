@@ -35,6 +35,7 @@ For more information about Winter Field Day, visit the official website: [https:
 
 ### Advanced Features
 - **Comprehensive Theme System** - 26 themes including school colors, military, and seasonal options
+- **Keyboard Shortcuts System** - Rapid logging shortcuts for power users and contest operations
 - **Real-time Clock Display** - GMT and local time based on station's ARRL section timezone
 - **Timezone Auto-detection** - Automatic timezone mapping from ARRL sections with manual override
 - **Band Activity Charts** - Visual analytics with Chart.js
@@ -147,6 +148,78 @@ Configure your station information in the **Station Setup** page:
 - **Hybrid System** - Each themed option available in both light and dark modes
 - **Persistent Preferences** - Theme selection automatically saved and restored
 - **Accessible Design** - High contrast buttons and readable text across all themes
+
+### Keyboard Shortcuts System
+WFDpy includes a comprehensive keyboard shortcuts system designed for rapid contest logging and power user efficiency.
+
+#### Navigation Shortcuts (Global)
+- `Alt+H` - Go to Home page
+- `Alt+L` - Go to Log Contact page  
+- `Alt+C` - View All Contacts
+- `Alt+S` - View Statistics
+- `Alt+M` - View Contact Map
+- `Alt+O` - View Objectives
+- `Alt+T` - Station Setup
+
+#### Form Field Shortcuts (Log Contact Page)
+- `Alt+1` - Focus Callsign field
+- `Alt+2` - Focus Frequency field
+- `Alt+3` - Focus Mode field
+- `Alt+4` - Focus RST Sent field
+- `Alt+5` - Focus RST Received field
+- `Alt+6` - Focus Exchange Received field
+- `Alt+7` - Focus Notes field
+
+#### Quick Value Shortcuts
+- `Ctrl+5` - Set RST to 599
+- `Ctrl+9` - Set RST to 59
+- `Ctrl+P` - Set mode to SSB (Phone)
+- `Ctrl+C` - Set mode to CW
+- `Ctrl+D` - Set mode to Digital
+
+#### Action Shortcuts
+- `Ctrl+Enter` - Submit current form
+- `Ctrl+R` - Clear/Reset form
+- `Alt+N` - New contact (clear form)
+- `Enter` - Move to next field (in forms)
+- `Tab` - Next field
+- `Shift+Tab` - Previous field
+- `Escape` - Cancel/Clear or close modals
+
+#### Utility Shortcuts
+- `F1` - Show keyboard shortcuts help
+- `Alt+?` - Show keyboard shortcuts help  
+- `Ctrl+/` - Enable/disable shortcuts
+- `Alt+D` - Toggle between light/dark theme variants
+- `Ctrl+T` - Open theme selector
+
+#### Rapid Contact Logging Example
+Here's a typical rapid logging workflow using keyboard shortcuts:
+
+1. `Alt+L` - Navigate to Log Contact page
+2. `Alt+1` - Focus callsign field, type callsign
+3. `Enter` - Move to frequency field, enter frequency
+4. `Enter` - Move to mode field
+5. `Ctrl+P` - Set mode to SSB
+6. `Enter` - Move to RST sent field
+7. `Ctrl+5` - Set RST to 599
+8. `Enter` - Move to RST received field
+9. `Ctrl+5` - Set RST to 599
+10. `Enter` - Move to exchange received field
+11. Type exchange information
+12. `Ctrl+Enter` - Submit the contact
+
+**Power User Tips:**
+- Press `F1` on any page for complete shortcuts reference
+- Use `Ctrl+/` to temporarily disable shortcuts if needed
+- `Alt+D` provides quick theme switching during long contests
+- `Escape` key quickly clears fields or closes dialog boxes
+- Form labels show shortcut hints (e.g., `Alt+1` next to Callsign)
+
+#### Keyboard Shortcuts Help
+- Click the keyboard icon (🎹) in the navigation bar for interactive help
+- All shortcuts are context-aware and work appropriately on different pages
+- Shortcuts won't interfere with normal typing in input fields
 
 ## 📸 Screenshots
 

@@ -28,33 +28,51 @@
   --bs-alert-danger-color: #842029;
 }
 
-/* Dark mode colors */
+/* Auburn-themed dark mode colors */
 [data-bs-theme="dark"] {
-  --bs-body-bg: #1a1a1a;
+  /* Auburn Navy Blue (#0C2340) as primary background */
+  --bs-body-bg: #0C2340;
   --bs-body-color: #ffffff;
-  --bs-card-bg: #2d2d2d;
-  --bs-card-border-color: rgba(255,255,255,.125);
-  --bs-navbar-bg: #1a365d;
+  
+  /* Lighter Auburn Navy for cards and sections */
+  --bs-card-bg: #1a3454;
+  --bs-card-border-color: rgba(221, 85, 12, 0.3);
+  
+  /* Auburn Navy with orange accent for navbar */
+  --bs-navbar-bg: #0C2340;
+  
+  /* Table styling with Auburn colors */
   --bs-table-bg: transparent;
-  --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
-  --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
-  --bs-border-color: #495057;
-  --bs-secondary-bg: #343a40;
-  --bs-tertiary-bg: #2d2d2d;
-  --bs-form-control-bg: #2d2d2d;
-  --bs-form-control-border: #495057;
-  --bs-alert-info-bg: #055160;
-  --bs-alert-info-border: #086b7a;
-  --bs-alert-info-color: #9eeaf9;
-  --bs-alert-warning-bg: #664d03;
-  --bs-alert-warning-border: #7a5c08;
-  --bs-alert-warning-color: #ffecb5;
-  --bs-alert-success-bg: #0f5132;
-  --bs-alert-success-border: #134e3a;
-  --bs-alert-success-color: #badbcc;
-  --bs-alert-danger-bg: #842029;
-  --bs-alert-danger-border: #9a2834;
-  --bs-alert-danger-color: #f5c2c7;
+  --bs-table-striped-bg: rgba(221, 85, 12, 0.08);
+  --bs-table-hover-bg: rgba(221, 85, 12, 0.15);
+  
+  /* Auburn Orange (#DD550C) accents for borders */
+  --bs-border-color: #DD550C;
+  
+  /* Secondary backgrounds with Auburn Navy variations */
+  --bs-secondary-bg: #1a3454;
+  --bs-tertiary-bg: #2a4464;
+  
+  /* Form controls with Auburn theme */
+  --bs-form-control-bg: #1a3454;
+  --bs-form-control-border: #DD550C;
+  
+  /* Auburn-themed alert colors */
+  --bs-alert-info-bg: #1a3454;
+  --bs-alert-info-border: #DD550C;
+  --bs-alert-info-color: #ffffff;
+  
+  --bs-alert-warning-bg: #DD550C;
+  --bs-alert-warning-border: #ff6b1a;
+  --bs-alert-warning-color: #ffffff;
+  
+  --bs-alert-success-bg: #2a4464;
+  --bs-alert-success-border: #DD550C;
+  --bs-alert-success-color: #ffffff;
+  
+  --bs-alert-danger-bg: #8B0000;
+  --bs-alert-danger-border: #A52A2A;
+  --bs-alert-danger-color: #ffffff;
 }
 
 /* Apply theme colors to body */
@@ -190,7 +208,7 @@ body {
   color: var(--bs-body-color) !important;
 }
 
-/* Dark mode toggle button styles */
+/* Auburn-themed dark mode toggle button styles */
 .dark-mode-toggle {
   position: relative;
   background: transparent;
@@ -205,24 +223,100 @@ body {
   background-color: var(--bs-table-hover-bg);
 }
 
+[data-bs-theme="dark"] .dark-mode-toggle:hover {
+  background-color: rgba(221, 85, 12, 0.2);
+  border-color: #ff6b1a;
+}
+
 .dark-mode-toggle .theme-icon {
   font-size: 1rem;
   margin-right: 0.25rem;
 }
 
-/* Badge adjustments for dark mode */
-[data-bs-theme="dark"] .badge.bg-light {
-  background-color: #495057 !important;
+/* Auburn-themed focus states */
+[data-bs-theme="dark"] .form-control:focus, 
+[data-bs-theme="dark"] .form-select:focus {
+  border-color: #DD550C !important;
+  box-shadow: 0 0 0 0.2rem rgba(221, 85, 12, 0.25) !important;
+}
+
+/* Auburn-themed button enhancements */
+[data-bs-theme="dark"] .btn-success {
+  background-color: #DD550C !important;
+  border-color: #DD550C !important;
   color: #ffffff !important;
 }
 
-/* Text colors */
+[data-bs-theme="dark"] .btn-success:hover {
+  background-color: #c44a0b !important;
+  border-color: #c44a0b !important;
+  color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .btn-primary {
+  background-color: #1a3454 !important;
+  border-color: #DD550C !important;
+  color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .btn-primary:hover {
+  background-color: #0C2340 !important;
+  border-color: #ff6b1a !important;
+  color: #ffffff !important;
+}
+
+/* Auburn-themed badge adjustments */
+[data-bs-theme="dark"] .badge.bg-light {
+  background-color: #1a3454 !important;
+  color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .badge.bg-primary {
+  background-color: #DD550C !important;
+  color: #ffffff !important;
+}
+
+/* Auburn-themed text colors */
 [data-bs-theme="dark"] .text-muted {
-  color: #adb5bd !important;
+  color: #b8c5d1 !important;
 }
 
 [data-bs-theme="dark"] .text-white-50 {
   color: rgba(255,255,255,.6) !important;
+}
+
+/* Auburn-themed links */
+[data-bs-theme="dark"] a {
+  color: #ff6b1a !important;
+}
+
+[data-bs-theme="dark"] a:hover {
+  color: #DD550C !important;
+}
+
+/* Auburn-themed progress bars (if any) */
+[data-bs-theme="dark"] .progress {
+  background-color: #1a3454 !important;
+}
+
+[data-bs-theme="dark"] .progress-bar {
+  background-color: #DD550C !important;
+}
+
+/* Auburn-themed card headers */
+[data-bs-theme="dark"] .card-header.bg-primary {
+  background-color: #DD550C !important;
+  border-color: #c44a0b !important;
+}
+
+[data-bs-theme="dark"] .card-header.bg-info {
+  background-color: #1a3454 !important;
+  border-color: #DD550C !important;
+}
+
+[data-bs-theme="dark"] .card-header.bg-warning {
+  background-color: #DD550C !important;
+  border-color: #ff6b1a !important;
 }
 
 /* Small adjustments for better dark mode experience */

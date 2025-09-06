@@ -1470,3 +1470,95 @@ body {
     background-color: #0dcaf0 !important;
     color: #000 !important;
 }
+
+/* Sticky Navigation Feature */
+.navbar-sticky {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Body padding when sticky nav is enabled to prevent content overlap */
+body.sticky-nav-enabled {
+    padding-top: 80px; /* Adjust based on navbar height */
+}
+
+/* Smooth transitions for sticky nav toggle */
+.navbar {
+    transition: all 0.3s ease;
+}
+
+/* Sticky nav toggle button states */
+#sticky-nav-toggle {
+    transition: all 0.2s ease;
+}
+
+#sticky-nav-toggle.active {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+#sticky-nav-toggle.active #sticky-nav-icon {
+    transform: rotate(45deg);
+    color: #ffc107;
+}
+
+/* Icon rotation animation */
+#sticky-nav-icon {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Enhanced sticky nav appearance in different themes */
+[data-bs-theme='dark'] .navbar-sticky {
+    background-color: var(--bs-dark) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-sticky {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Responsive sticky nav adjustments */
+@media (max-width: 991.98px) {
+    body.sticky-nav-enabled {
+        padding-top: 70px; /* Smaller padding for mobile */
+    }
+}
+
+/* Sticky nav compatibility with all theme variants */
+[data-bs-theme='auburn'] .navbar-sticky,
+[data-bs-theme='auburn-light'] .navbar-sticky,
+[data-bs-theme='alabama'] .navbar-sticky,
+[data-bs-theme='alabama-light'] .navbar-sticky,
+[data-bs-theme='georgia'] .navbar-sticky,
+[data-bs-theme='georgia-light'] .navbar-sticky,
+[data-bs-theme='lsu'] .navbar-sticky,
+[data-bs-theme='lsu-light'] .navbar-sticky,
+[data-bs-theme='florida'] .navbar-sticky,
+[data-bs-theme='florida-light'] .navbar-sticky,
+[data-bs-theme='tennessee'] .navbar-sticky,
+[data-bs-theme='tennessee-light'] .navbar-sticky,
+[data-bs-theme='texas-am'] .navbar-sticky,
+[data-bs-theme='texas-am-light'] .navbar-sticky,
+[data-bs-theme='army'] .navbar-sticky,
+[data-bs-theme='army-light'] .navbar-sticky,
+[data-bs-theme='navy'] .navbar-sticky,
+[data-bs-theme='navy-light'] .navbar-sticky,
+[data-bs-theme='air-force'] .navbar-sticky,
+[data-bs-theme='air-force-light'] .navbar-sticky,
+[data-bs-theme='marines'] .navbar-sticky,
+[data-bs-theme='marines-light'] .navbar-sticky,
+[data-bs-theme='snow'] .navbar-sticky,
+[data-bs-theme='snow-light'] .navbar-sticky,
+[data-bs-theme='usa'] .navbar-sticky,
+[data-bs-theme='usa-light'] .navbar-sticky,
+[data-bs-theme='neon'] .navbar-sticky,
+[data-bs-theme='neon-light'] .navbar-sticky {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+

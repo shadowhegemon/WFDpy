@@ -51,6 +51,11 @@
                         <i class="bi bi-keyboard"></i>
                     </button>
                     
+                    <!-- Sticky navigation toggle -->
+                    <button class="btn btn-outline-light btn-sm me-2" type="button" id="sticky-nav-toggle" title="Toggle Sticky Navigation">
+                        <i class="bi bi-pin-angle" id="sticky-nav-icon"></i>
+                    </button>
+                    
                     <!-- Theme selector dropdown -->
                     <div class="dropdown">
                         <button class="btn dark-mode-toggle navbar-text dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Select theme">
@@ -263,6 +268,63 @@
                 // Update clock every second
                 setInterval(updateNavClock, 1000);
             });
+        });
+    </script>
+    
+    <!-- Sticky Navigation JavaScript -->
+    <script>
+        // Sticky navigation functionality
+        const stickyNavToggle = document.getElementById('sticky-nav-toggle');
+        const stickyNavIcon = document.getElementById('sticky-nav-icon');
+        const navbar = document.querySelector('.navbar');
+        const body = document.body;
+        
+        // Check for saved sticky nav preference
+        const stickyNavEnabled = localStorage.getItem('stickyNav') === 'true';
+        
+        // Apply sticky nav state on page load
+        function applyStickyNav(enabled) {
+            if (enabled) {
+                navbar.classList.add('navbar-sticky');
+                body.classList.add('sticky-nav-enabled');
+                stickyNavToggle.classList.add('active');
+                stickyNavToggle.title = 'Disable Sticky Navigation';
+            } else {
+                navbar.classList.remove('navbar-sticky');
+                body.classList.remove('sticky-nav-enabled');
+                stickyNavToggle.classList.remove('active');
+                stickyNavToggle.title = 'Enable Sticky Navigation';
+            }
+        }
+        
+        // Apply saved state on page load
+        applyStickyNav(stickyNavEnabled);
+        
+        // Handle sticky nav toggle click
+        stickyNavToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const isCurrentlyEnabled = navbar.classList.contains('navbar-sticky');
+            const newState = !isCurrentlyEnabled;
+            
+            applyStickyNav(newState);
+            localStorage.setItem('stickyNav', newState.toString());
+        });
+        
+        // Update sticky nav state when scrolling (optional enhancement)
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            if (!navbar.classList.contains('navbar-sticky')) return;
+            
+            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Optional: Auto-hide on scroll down, show on scroll up
+            // if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
+            //     navbar.style.transform = 'translateY(-100%)';
+            // } else {
+            //     navbar.style.transform = 'translateY(0)';
+            // }
+            
+            lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
         });
     </script>
     
